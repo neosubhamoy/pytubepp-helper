@@ -1,0 +1,7 @@
+{
+    "name": "com.neosubhamoy.pytubepp.helper",
+    "description": "A helper app for pytubepp-extention to communicate with pytubepp-cli",
+    "path": "pytubepp-helper-msghost.exe",
+    "type": "stdio",
+    "allowed_extensions": ["pytubepp-addon@neosubhamoy.com"]
+}

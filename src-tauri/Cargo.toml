@@ -1,0 +1,30 @@
+[package]
+name = "pytubepp-helper"
+version = "0.1.0"
+description = "PytubePP Helper"
+authors = ["neosubhamoy"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1", features = [] }
+
+[dependencies]
+tauri = { version = "1", features = [ "process-relaunch", "window-start-dragging", "window-close", "window-unmaximize", "process-exit", "window-show", "window-unminimize", "window-hide", "window-minimize", "window-maximize", "system-tray", "shell-all"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.39.2", features = ["full"] }
+tokio-tungstenite = "*"
+futures-util = "0.3.30"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
+[workspace]
+members = [
+  ".",
+  "msghost",
+  "autostart"
+]

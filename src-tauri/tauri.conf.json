@@ -1,0 +1,116 @@
+{
+  "build": {
+    "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
+    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml && node signFiles.js && node copyFiles.js && npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "pytubepp-helper",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true,
+        "scope": [
+          {
+            "name": "is-pytubepp-installed",
+            "cmd": "pytubepp",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-pytubefix-installed",
+            "cmd": "pytubefix",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-ffmpeg-installed",
+            "cmd": "ffmpeg",
+            "args": ["-version"]
+          },
+          {
+            "name": "is-python-installed",
+            "cmd": "python",
+            "args": ["--version"]
+          },
+          {
+            "name": "fetch-video-info",
+            "cmd": "pytubefix",
+            "args": [{ "validator": "\\S+"}, "--list"]
+          }
+          
+        ]
+      },
+      "fs": {
+        "scope": [
+          "$RESOURCE/pytubepp-helper-msghost.json",
+          "$RESOURCE/pytubepp-helper-msghost-moz.json",
+          "$RESOURCE/pytubepp-helper-msghost.exe",
+          "$RESOURCE/pytubepp-helper-autostart.exe"
+        ]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": true
+      }
+    },
+    "windows": [
+      {
+        "title": "PytubePP Helper",
+        "width": 500,
+        "height": 300
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.neosubhamoy.pytubepp.helper",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "windows": {
+        "certificateThumbprint": "c12a1579698a3cc86ef3b2c942172cd995149b10",
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "http://timestamp.sectigo.com",
+        "wix": {
+          "fragmentPaths": ["installer/windows/wix-fragment-registry.wxs"],
+          "componentRefs": ["PytubeppHelperFragmentRegistryEntries"]
+        }
+      },
+      "resources": [
+      "pytubepp-helper-msghost.json",
+      "pytubepp-helper-msghost-moz.json",
+      "pytubepp-helper-msghost.exe",
+      "pytubepp-helper-autostart.exe"
+      ]
+    },
+    "systemTray": {
+      "iconPath": "icons/icon.ico",
+      "iconAsTemplate": true
+    }
+  }
+}

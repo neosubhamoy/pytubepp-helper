@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="PytubeppHelperFragmentRegistryEntries" Guid="*">
+        <RegistryKey Root="HKCU" Key="Software\Google\Chrome\NativeMessagingHosts\com.neosubhamoy.pytubepp.helper" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="[INSTALLDIR]pytubepp-helper-msghost.json" KeyPath="no" />
+        </RegistryKey>
+        <RegistryKey Root="HKCU" Key="Software\Mozilla\NativeMessagingHosts\com.neosubhamoy.pytubepp.helper" Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="[INSTALLDIR]pytubepp-helper-msghost-moz.json" KeyPath="no" />
+        </RegistryKey>
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+          <RegistryValue Name="pytubepp-helper" Type="string" Value="[INSTALLDIR]pytubepp-helper-autostart.exe" KeyPath="no" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>
