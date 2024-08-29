@@ -1,14 +1,18 @@
 export interface InstalledPrograms {
+    winget: {
+        installed: boolean;
+        version: string | null;
+    };
     python: {
+        installed: boolean;
+        version: string | null;
+    };
+    pip: {
         installed: boolean;
         version: string | null;
     };
     ffmpeg: {
         installed: boolean;
-        version: string | null;
-    };
-    pytubefix: {
-        installed: boolean
         version: string | null;
     };
     pytubepp: {

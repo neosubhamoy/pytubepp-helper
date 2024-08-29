@@ -84,6 +84,40 @@ fn fetch_video_info(url: String) {
 }
 
 #[tauri::command]
+fn install_program(installer: String ,program: String) {
+    #[cfg(target_os = "windows")]
+    {
+        let command = format!("{} install {}", &installer, &program);
+        Command::new("cmd")
+            .args(["/k", command.as_str()])
+            .spawn()
+            .unwrap();
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        let command = format!("{} install {}", &installer, &program);
+        Command::new("gnome-terminal")
+            .args(["--", command.as_str()])
+            .spawn()
+            .unwrap();
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        let command = format!("{} install {}", &installer, &program);
+        Command::new("osascript")
+            .arg("-e")
+            .arg(format!(
+                "tell app \"Terminal\" to activate do script \"{}\"",
+                command
+            ))
+            .spawn()
+            .unwrap();
+    }
+}
+
+#[tauri::command]
 fn download_stream(url: String, stream: String) {
     #[cfg(target_os = "windows")]
     {
@@ -173,6 +207,7 @@ async fn main() {
             // handle_websocket_message,
             send_to_extension,
             fetch_video_info,
+            install_program,
             download_stream,
             receive_frontend_response
         ])

@@ -19,13 +19,18 @@
         "open": true,
         "scope": [
           {
-            "name": "is-pytubepp-installed",
-            "cmd": "pytubepp",
+            "name": "is-winget-installed",
+            "cmd": "winget",
             "args": ["--version"]
           },
           {
-            "name": "is-pytubefix-installed",
-            "cmd": "pytubefix",
+            "name": "is-python-installed",
+            "cmd": "python",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-pip-installed",
+            "cmd": "pip",
             "args": ["--version"]
           },
           {
@@ -34,8 +39,8 @@
             "args": ["-version"]
           },
           {
-            "name": "is-python-installed",
-            "cmd": "python",
+            "name": "is-pytubepp-installed",
+            "cmd": "pytubepp",
             "args": ["--version"]
           },
           {
@@ -75,7 +80,7 @@
       {
         "title": "PytubePP Helper",
         "width": 500,
-        "height": 300
+        "height": 320
       }
     ],
     "security": {

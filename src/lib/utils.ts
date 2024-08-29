@@ -59,7 +59,10 @@ export function extract_version(output: string): string | null {
       /ffmpeg version (\d+\.\d+)/,      // Pattern for ffmpeg
       /Python (\d+\.\d+\.\d+)/,         // Pattern for Python
       /pytubefix (\d+\.\d+\.\d+)/,      // Pattern for pytubefix
-      /pytubepp (\d+\.\d+\.\d+)/        // Pattern for pytubepp
+      /pytubepp (\d+\.\d+\.\d+)/,       // Pattern for pytubepp
+      /v(\d+\.\d+\.\d+)/,               // Pattern for winget
+      /pip (\d+\.\d+)/,                 // Pattern for pip
+
   ];
   for (const pattern of versionPatterns) {
       const match = output.match(pattern);
@@ -95,3 +98,15 @@ export async function sendStreamInfo(url: string) {
 
   fetchData();
 }
+
+export function compareVersions (v1: string, v2: string) {
+  const parts1 = v1.split('.').map(Number);
+  const parts2 = v2.split('.').map(Number);
+  for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+    const part1 = parts1[i] || 0;
+    const part2 = parts2[i] || 0;
+    if (part1 > part2) return 1;
+    if (part1 < part2) return -1;
+  }
+  return 0;
+};
