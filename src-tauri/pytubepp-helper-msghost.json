@@ -3,5 +3,5 @@
     "description": "A helper app for pytubepp-extention to communicate with pytubepp-cli",
     "path": "pytubepp-helper-msghost.exe",
     "type": "stdio",
-    "allowed_origins": ["chrome-extension://adebedkaedobamilbbobbajepnnkkfcg/", "chrome-extension://mmhhbpdhkogpcieblpdilflfoimajepp"]
+    "allowed_origins": ["chrome-extension://adebedkaedobamilbbobbajepnnkkfcg/", "chrome-extension://mmhhbpdhkogpcieblpdilflfoimajepp/"]
 }
