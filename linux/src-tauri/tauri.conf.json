@@ -1,0 +1,109 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "pytubepp-helper",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true,
+        "scope": [
+          {
+            "name": "is-apt-installed",
+            "cmd": "apt",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-python-installed",
+            "cmd": "python3",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-pip-installed",
+            "cmd": "pip",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-ffmpeg-installed",
+            "cmd": "ffmpeg",
+            "args": ["-version"]
+          },
+          {
+            "name": "is-pytubepp-installed",
+            "cmd": "pytubepp",
+            "args": ["--version"]
+          },
+          {
+            "name": "fetch-video-info",
+            "cmd": "pytubefix",
+            "args": [{ "validator": "\\S+"}, "--list"]
+          }
+          
+        ]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": true
+      }
+    },
+    "windows": [
+      {
+        "title": "PytubePP Helper",
+        "width": 500,
+        "height": 320
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.neosubhamoy.pytubepp.helper",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "deb": {
+        "depends": ["python3-pip", "ffmpeg"],
+        "files": {
+          "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
+          "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
+          "/usr/lib/mozilla/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/firefox/com.neosubhamoy.pytubepp.helper.json",
+          "/usr/bin/pytubepp-helper-msghost": "./target/release/pytubepp-helper-msghost",
+          "/usr/bin/pytubepp-helper-autostart": "./target/release/pytubepp-helper-autostart",
+          "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
+        }
+      }
+    },
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    }
+  }
+}

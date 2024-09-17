@@ -1,0 +1,7 @@
+{
+    "name": "com.neosubhamoy.pytubepp.helper",
+    "description": "A helper app for pytubepp-extension to communicate with pytubepp-cli",
+    "path": "/usr/bin/pytubepp-helper-msghost",
+    "type": "stdio",
+    "allowed_origins": ["chrome-extension://adebedkaedobamilbbobbajepnnkkfcg/", "chrome-extension://mmhhbpdhkogpcieblpdilflfoimajepp/", "chrome-extension://ebneapoekcjelholncnlpdohjbjabhbi/", "chrome-extension://cohjehldppmnbfogjdjpbjknhlhmfhjj/"]
+}

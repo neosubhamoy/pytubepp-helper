@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=pytubepp-helper
+Icon=pytubepp-helper
+Comment=pytubepp-helper autostart script
+Exec=/usr/bin/pytubepp-helper-autostart
+StartupNotify=false
+Terminal=false
