@@ -4,7 +4,7 @@ import { Command } from '@tauri-apps/api/shell';
 import { Stream } from "@/types";
 import { invoke } from "@tauri-apps/api";
 
-export function extract_xml(input: string): string[] {
+export function extractXml(input: string): string[] {
   const regex = /<Stream: [^>]+>/g;
   const matches = input.match(regex);
   return matches ? matches : [];
@@ -27,7 +27,7 @@ function parseAttributes(attributesString: string): Partial<Stream> {
   return attributes;
 }
 
-export function convert_xml_to_json(xmlStrings: string[]): Stream[] {
+export function convertXmlToJson(xmlStrings: string[]): Stream[] {
   return xmlStrings
       .map(xmlString => {
           const attributesString = xmlString.replace('<Stream: ', '').replace('>', '');
@@ -40,7 +40,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function is_installed(program: string, arg: string): Promise<{ installed: boolean, output: string | null }> {
+export async function isInstalled(program: string, arg: string): Promise<{ installed: boolean, output: string | null }> {
   try{
     const output = await new Command('is-' + program + '-installed', [arg]).execute();
     if (output.code === 0) {
@@ -54,13 +54,42 @@ export async function is_installed(program: string, arg: string): Promise<{ inst
   }
 }
 
-export function extract_version(output: string): string | null {
+export async function detectDistro(): Promise<string | null> {
+  try{
+    const output = await new Command('detect-distro', ['^ID=', '/etc/os-release']).execute();
+    if (output.code === 0) {
+      return output.stdout;
+    } else {
+      return output.stdout;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export function detectDistroBase(distro: string | null): string | null{
+  if(distro) {
+    if(['debian', 'ubuntu', 'pop', 'kali'].includes(distro)) {
+      return 'debian';
+    } else if (['rhel', 'fedora', 'centos', 'rocky'].includes(distro)) {
+      return 'rhel';
+    } else {
+      return 'other';
+    }
+  } else {
+    return null;
+  }
+}
+
+export function extractVersion(output: string): string | null {
   const versionPatterns = [
       /ffmpeg version (\d+\.\d+)/,      // Pattern for ffmpeg
       /Python (\d+\.\d+\.\d+)/,         // Pattern for Python
       /pytubefix (\d+\.\d+\.\d+)/,      // Pattern for pytubefix
       /pytubepp (\d+\.\d+\.\d+)/,       // Pattern for pytubepp
       /apt (\d+\.\d+\.\d+)/,            // Pattern for apt
+      /(\d+\.\d+\.\d+)/,                // Pattern for dnf
       /pip (\d+\.\d+)/,                 // Pattern for pip
 
   ];
@@ -73,6 +102,12 @@ export function extract_version(output: string): string | null {
   return null;
 }
 
+export function extractDistroId(input: string): string | null {
+  const regex = /ID=([a-zA-Z]+)/;
+  const match = input.match(regex);
+  return match ? match[1] : null;
+}
+
 export async function sendStreamInfo(url: string) {
   const fetchData = async () => {
     try {
@@ -81,7 +116,7 @@ export async function sendStreamInfo(url: string) {
         console.log(output.stdout);
         const sendStreamData = async () => {
           try {
-            const streamsstr = JSON.stringify(convert_xml_to_json(extract_xml(output.stdout)))
+            const streamsstr = JSON.stringify(convertXmlToJson(extractXml(output.stdout)))
             await invoke('receive_frontend_response',  { response: streamsstr });
           } catch (error) {
             console.error(error);

@@ -19,8 +19,18 @@
         "open": true,
         "scope": [
           {
+            "name": "detect-distro",
+            "cmd": "grep",
+            "args": ["^ID=", "/etc/os-release"]
+          },
+          {
             "name": "is-apt-installed",
             "cmd": "apt",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-dnf-installed",
+            "cmd": "dnf",
             "args": ["--version"]
           },
           {
@@ -91,6 +101,20 @@
       ],
       "deb": {
         "depends": ["python3-pip", "ffmpeg"],
+        "files": {
+          "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
+          "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
+          "/usr/lib/mozilla/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/firefox/com.neosubhamoy.pytubepp.helper.json",
+          "/usr/bin/pytubepp-helper-msghost": "./target/release/pytubepp-helper-msghost",
+          "/usr/bin/pytubepp-helper-autostart": "./target/release/pytubepp-helper-autostart",
+          "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
+        }
+      },
+      "rpm": {
+        "epoch": 0,
+        "release": "1",
+        "license": "MIT",
+        "depends": ["python3-pip", "ffmpeg-free"],
         "files": {
           "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
           "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/chrome/com.neosubhamoy.pytubepp.helper.json",
