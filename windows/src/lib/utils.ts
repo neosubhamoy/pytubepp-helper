@@ -1,40 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { Command } from '@tauri-apps/api/shell';
-import { Stream } from "@/types";
 import { invoke } from "@tauri-apps/api";
-
-export function extract_xml(input: string): string[] {
-  const regex = /<Stream: [^>]+>/g;
-  const matches = input.match(regex);
-  return matches ? matches : [];
-}
-
-
-function parseAttributes(attributesString: string): Partial<Stream> {
-  const attributes: Partial<Stream> = {};
-  const regex = /(\w+)="([^"]*)"/g;
-  let match;
-
-  while ((match = regex.exec(attributesString)) !== null) {
-      const key = match[1];
-      const value = match[2];
-      if (['itag', 'mime_type', 'res', 'fps', 'vcodec'].includes(key)) {
-          attributes[key as keyof Partial<Stream>] = value;
-      }
-  }
-
-  return attributes;
-}
-
-export function convert_xml_to_json(xmlStrings: string[]): Stream[] {
-  return xmlStrings
-      .map(xmlString => {
-          const attributesString = xmlString.replace('<Stream: ', '').replace('>', '');
-          return parseAttributes(attributesString);
-      })
-      .filter(stream => stream.res !== undefined) as Stream[];
-}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -76,13 +43,12 @@ export function extract_version(output: string): string | null {
 export async function sendStreamInfo(url: string) {
   const fetchData = async () => {
     try {
-      const output = await new Command('fetch-video-info', [url, '--list']).execute();
+      const output = await new Command('fetch-video-info', [url, '--raw-info']).execute();
       if (output.code === 0) {
         console.log(output.stdout);
         const sendStreamData = async () => {
           try {
-            const streamsstr = JSON.stringify(convert_xml_to_json(extract_xml(output.stdout)))
-            await invoke('receive_frontend_response',  { response: streamsstr });
+            await invoke('receive_frontend_response',  { response: output.stdout });
           } catch (error) {
             console.error(error);
           }

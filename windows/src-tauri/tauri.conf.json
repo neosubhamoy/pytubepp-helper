@@ -45,8 +45,8 @@
           },
           {
             "name": "fetch-video-info",
-            "cmd": "pytubefix",
-            "args": [{ "validator": "\\S+"}, "--list"]
+            "cmd": "pytubepp",
+            "args": [{ "validator": "\\S+"}, "--raw-info"]
           }
           
         ]
