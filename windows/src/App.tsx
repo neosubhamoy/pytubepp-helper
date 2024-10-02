@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { InstalledPrograms, WebSocketMessage, } from "./types";
-import { compareVersions, extract_version, is_installed, sendStreamInfo } from "./lib/utils";
+import { compareVersions, extractVersion, isInstalled, sendStreamInfo } from "./lib/utils";
 import { CircleCheck, TriangleAlert, CircleAlert } from 'lucide-react';
 
 function App() {
@@ -71,56 +71,56 @@ function App() {
     };
   }, []);
 
-  function check_all_programs() {
-    is_installed('winget', '--version').then((result) => {
+  function checkAllPrograms() {
+    isInstalled('winget', '--version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
         winget: {
           installed: result.installed,
-          version: result.output ? extract_version(result.output) : null,
+          version: result.output ? extractVersion(result.output) : null,
         }
       }));
     });
-    is_installed('python', '--version').then((result) => {
+    isInstalled('python', '--version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
         python: {
           installed: result.installed,
-          version: result.output ? extract_version(result.output) : null,
+          version: result.output ? extractVersion(result.output) : null,
         }
       }));
     });
-    is_installed('pip', '--version').then((result) => {
+    isInstalled('pip', '--version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
         pip: {
           installed: result.installed,
-          version: result.output ? extract_version(result.output) : null,
+          version: result.output ? extractVersion(result.output) : null,
         }
       }));
     });
-    is_installed('ffmpeg', '-version').then((result) => {
+    isInstalled('ffmpeg', '-version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
         ffmpeg: {
           installed: result.installed,
-          version: result.output ? extract_version(result.output) : null,
+          version: result.output ? extractVersion(result.output) : null,
         }
       }));
     });
-    is_installed('pytubepp', '--version').then((result) => {
+    isInstalled('pytubepp', '--version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
         pytubepp: {
           installed: result.installed,
-          version: result.output ? extract_version(result.output) : null,
+          version: result.output ? extractVersion(result.output) : null,
         }
       }));
     });
   }
 
   useEffect(() => {
-    check_all_programs();
+    checkAllPrograms();
   }
   , []);
 
@@ -129,7 +129,7 @@ function App() {
       <div className="container">
         <div className="topbar flex justify-between items-center mt-5">
           <h1 className="text-xl font-bold">PytubePP Helper</h1>
-          <Button size="sm" onClick={check_all_programs}>Refresh</Button>
+          <Button size="sm" onClick={checkAllPrograms}>Refresh</Button>
         </div>
         <div className="programstats mt-5">
           <div className="programitem flex items-center justify-between">

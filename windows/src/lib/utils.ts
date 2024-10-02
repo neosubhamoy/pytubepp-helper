@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function is_installed(program: string, arg: string): Promise<{ installed: boolean, output: string | null }> {
+export async function isInstalled(program: string, arg: string): Promise<{ installed: boolean, output: string | null }> {
   try{
     const output = await new Command('is-' + program + '-installed', [arg]).execute();
     if (output.code === 0) {
@@ -21,7 +21,7 @@ export async function is_installed(program: string, arg: string): Promise<{ inst
   }
 }
 
-export function extract_version(output: string): string | null {
+export function extractVersion(output: string): string | null {
   const versionPatterns = [
       /ffmpeg version (\d+\.\d+)/,      // Pattern for ffmpeg
       /Python (\d+\.\d+\.\d+)/,         // Pattern for Python
