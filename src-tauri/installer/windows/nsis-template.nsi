@@ -22,7 +22,7 @@ ${StrLoc}
 !define VERSIONWITHBUILD "0.2.0.0"
 !define SHORTDESCRIPTION "PytubePP Helper"
 !define INSTALLMODE "currentUser"
-!define LICENSE "..\..\..\..\..\..\LICENSE"
+!define LICENSE "..\..\..\..\..\LICENSE"
 !define INSTALLERICON ""
 !define SIDEBARIMAGE ""
 !define HEADERIMAGE ""
