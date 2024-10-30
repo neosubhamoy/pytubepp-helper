@@ -1,0 +1,123 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "devPath": "http://localhost:1422",
+    "distDir": "../dist"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true,
+        "scope": [
+          {
+            "name": "detect-windows",
+            "cmd": "systeminfo",
+            "args": []
+          },
+          {
+            "name": "detect-distro",
+            "cmd": "grep",
+            "args": ["^ID=", "/etc/os-release"]
+          },
+          {
+            "name": "is-apt-installed",
+            "cmd": "apt",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-dnf-installed",
+            "cmd": "dnf",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-python3-installed",
+            "cmd": "python3",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-pip3-installed",
+            "cmd": "pip3",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-winget-installed",
+            "cmd": "winget",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-python-installed",
+            "cmd": "python",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-pip-installed",
+            "cmd": "pip",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-ffmpeg-installed",
+            "cmd": "ffmpeg",
+            "args": ["-version"]
+          },
+          {
+            "name": "is-pytubepp-installed",
+            "cmd": "pytubepp",
+            "args": ["--version"]
+          },
+          {
+            "name": "fetch-video-info",
+            "cmd": "pytubepp",
+            "args": [{ "validator": "\\S+" }, "--raw-info"]
+          }
+        ]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": true
+      }
+    },
+    "windows": [
+      {
+        "title": "PytubePP Helper",
+        "width": 500,
+        "height": 320
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.neosubhamoy.pytubepp.helper",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    }
+  }
+}
