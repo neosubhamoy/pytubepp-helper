@@ -5,7 +5,7 @@
 A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Processor CLI
 
 [![status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)](https://github.com/neosubhamoy/pytubepp-helper)
-[![verion](https://img.shields.io/badge/version-v0.2.0_beta-yellow.svg?style=flat)](https://github.com/neosubhamoy/pytubepp-helper)
+[![github tag](https://img.shields.io/github/v/tag/neosubhamoy/pytubepp-helper?color=yellow)](https://github.com/neosubhamoy/pytubepp-helper)
 [![PRs](https://img.shields.io/badge/PRs-welcome-blue.svg?style=flat)](https://github.com/neosubhamoy/pytubepp-helper)
 
 #### **🌟 Loved this Project? Don't forget to Star this Repo to show us your appreciation !!**
