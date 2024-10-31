@@ -20,6 +20,11 @@
             "args": []
           },
           {
+            "name": "detect-macos",
+            "cmd": "sw_vers",
+            "args": []
+          },
+          {
             "name": "detect-distro",
             "cmd": "grep",
             "args": ["^ID=", "/etc/os-release"]
@@ -47,6 +52,11 @@
           {
             "name": "is-winget-installed",
             "cmd": "winget",
+            "args": ["--version"]
+          },
+          {
+            "name": "is-homebrew-installed",
+            "cmd": "brew",
             "args": ["--version"]
           },
           {

@@ -11,6 +11,10 @@ export interface InstalledPrograms {
         installed: boolean;
         version: string | null;
     };
+    brew: {
+        installed: boolean;
+        version: string | null;
+    };
     python: {
         installed: boolean;
         version: string | null;

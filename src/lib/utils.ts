@@ -35,6 +35,20 @@ export async function detectWindows(): Promise<string | null> {
   }
 }
 
+export async function detectMacOs(): Promise<string | null> {
+  try{
+    const output = await new Command('detect-macos', []).execute();
+    if (output.code === 0) {
+      return output.stdout;
+    } else {
+      return output.stdout;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function detectDistro(): Promise<string | null> {
   try{
     const output = await new Command('detect-distro', ['^ID=', '/etc/os-release']).execute();
@@ -71,15 +85,17 @@ export function extractDistroId(input: string): string | null {
 
 export function extractVersion(output: string): string | null {
   const versionPatterns = [
-      /ffmpeg version (\d+\.\d+)/,      // Pattern for ffmpeg
-      /Python (\d+\.\d+\.\d+)/,         // Pattern for Python
-      /pytubefix (\d+\.\d+\.\d+)/,      // Pattern for pytubefix
-      /pytubepp (\d+\.\d+\.\d+)/,       // Pattern for pytubepp
-      /v(\d+\.\d+\.\d+)/,               // Pattern for winget
-      /pip (\d+\.\d+)/,                 // Pattern for pip
-      /OS Version:.*Build (\d+)/,       // Pattern for Windows build
-      /apt (\d+\.\d+\.\d+)/,            // Pattern for apt
-      /(\d+\.\d+\.\d+)/,                // Pattern for dnf
+      /ffmpeg version (\d+\.\d+)/,           // Pattern for ffmpeg
+      /Python (\d+\.\d+\.\d+)/,              // Pattern for Python
+      /pytubefix (\d+\.\d+\.\d+)/,           // Pattern for pytubefix
+      /pytubepp (\d+\.\d+\.\d+)/,            // Pattern for pytubepp
+      /v(\d+\.\d+\.\d+)/,                    // Pattern for winget
+      /pip (\d+\.\d+)/,                      // Pattern for pip
+      /OS Version:.*Build (\d+)/,            // Pattern for Windows build
+      /apt (\d+\.\d+\.\d+)/,                 // Pattern for apt
+      /(\d+\.\d+\.\d+)/,                     // Pattern for dnf
+      /ProductVersion:\s+(\d+\.\d+\.\d+)/,   // Pattern for macOS version
+      /Homebrew (\d+\.\d+\.\d+)/,            // Pattern for Homebrew
 
   ];
   for (const pattern of versionPatterns) {
