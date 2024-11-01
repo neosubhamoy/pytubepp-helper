@@ -85,18 +85,17 @@ export function extractDistroId(input: string): string | null {
 
 export function extractVersion(output: string): string | null {
   const versionPatterns = [
-      /ffmpeg version (\d+\.\d+)/,           // Pattern for ffmpeg
-      /Python (\d+\.\d+\.\d+)/,              // Pattern for Python
-      /pytubefix (\d+\.\d+\.\d+)/,           // Pattern for pytubefix
-      /pytubepp (\d+\.\d+\.\d+)/,            // Pattern for pytubepp
-      /v(\d+\.\d+\.\d+)/,                    // Pattern for winget
-      /pip (\d+\.\d+)/,                      // Pattern for pip
-      /OS Version:.*Build (\d+)/,            // Pattern for Windows build
-      /apt (\d+\.\d+\.\d+)/,                 // Pattern for apt
-      /(\d+\.\d+\.\d+)/,                     // Pattern for dnf
-      /ProductVersion:\s+(\d+\.\d+\.\d+)/,   // Pattern for macOS version
-      /Homebrew (\d+\.\d+\.\d+)/,            // Pattern for Homebrew
-
+      /ffmpeg version (\d+\.\d+)/,              // Pattern for ffmpeg
+      /Python (\d+\.\d+\.\d+)/,                 // Pattern for Python
+      /pytubefix (\d+\.\d+\.\d+)/,              // Pattern for pytubefix
+      /pytubepp (\d+\.\d+\.\d+)/,               // Pattern for pytubepp
+      /v(\d+\.\d+\.\d+)/,                       // Pattern for winget
+      /pip (\d+\.\d+)/,                         // Pattern for pip
+      /OS Version:.*Build (\d+)/,               // Pattern for Windows build
+      /apt (\d+\.\d+\.\d+)/,                    // Pattern for apt
+      /(\d+\.\d+\.\d+)/,                        // Pattern for dnf
+      /ProductVersion:\s+(\d+\.\d+(\.\d+)?)/,   // Pattern for macOS version
+      /Homebrew (\d+\.\d+\.\d+)/,               // Pattern for Homebrew
   ];
   for (const pattern of versionPatterns) {
       const match = output.match(pattern);

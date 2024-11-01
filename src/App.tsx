@@ -4,6 +4,7 @@ import "./index.css";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from '@tauri-apps/api/event';
 import { appWindow } from '@tauri-apps/api/window';
+import { platform } from '@tauri-apps/api/os';
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -193,26 +194,40 @@ function App() {
 
   useEffect(() => {
     checkAllPrograms();
-    detectWindows().then((result) => {
-      if(result) {
-        setIsWindows(true);
-        setWindowsVersion(extractVersion(result));
+    const runPlatformSpecificChecks = async () => {
+      const currentPlatform = await platform();
+
+      switch (currentPlatform) {
+        case 'win32':
+          const windowsResult = await detectWindows();
+          if (windowsResult) {
+            setIsWindows(true);
+            setWindowsVersion(extractVersion(windowsResult));
+          }
+          break;
+
+        case 'darwin':
+          const macResult = await detectMacOs();
+          if (macResult) {
+            setIsMacOs(true);
+            setMacOsVersion(extractVersion(macResult));
+          }
+          break;
+
+        case 'linux':
+          const distroResult = await detectDistro();
+          if (distroResult) {
+            setDistroId(extractDistroId(distroResult));
+            setDistroBase(detectDistroBase(extractDistroId(distroResult)));
+          }
+          break;
+
+        default:
+          console.log('Unsupported platform');
       }
-    })
-    detectMacOs().then((result) => {
-      if(result) {
-        setIsMacOs(true);
-        setMacOsVersion(extractVersion(result));
-      }
-    })
-    detectDistro().then((result) => {
-      if(result) {
-        setDistroId(extractDistroId(result))
-        setDistroBase(detectDistroBase(extractDistroId(result)))
-      }
-    })
-  }
-  , []);
+    };
+    runPlatformSpecificChecks().catch(console.error);
+  }, [])
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

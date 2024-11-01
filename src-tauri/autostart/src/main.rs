@@ -29,8 +29,6 @@ fn connect_with_retry(url: &str, max_attempts: u32) -> Result<websocket::sync::C
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Launch the main application
-    let _ = Command::new("pytubepp-helper.exe")
-        .spawn();
     let _ = Command::new("pytubepp-helper")
         .spawn();
 

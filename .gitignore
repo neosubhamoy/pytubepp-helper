@@ -23,9 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
-# Executables
+# Executables and manifests
 pytubepp-helper-msghost.exe
 pytubepp-helper-autostart.exe
+pytubepp-helper-msghost.json
+pytubepp-helper-msghost-moz.json
 
 # Certificate files
 certificate.pfx
