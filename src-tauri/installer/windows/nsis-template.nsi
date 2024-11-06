@@ -18,8 +18,8 @@ ${StrLoc}
 
 !define MANUFACTURER "neosubhamoy"
 !define PRODUCTNAME "pytubepp-helper"
-!define VERSION "0.2.0"
-!define VERSIONWITHBUILD "0.2.0.0"
+!define VERSION "0.3.0"
+!define VERSIONWITHBUILD "0.3.0.0"
 !define SHORTDESCRIPTION "PytubePP Helper"
 !define INSTALLMODE "currentUser"
 !define LICENSE "..\..\..\..\..\LICENSE"
