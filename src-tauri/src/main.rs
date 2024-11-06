@@ -148,6 +148,7 @@ fn download_stream(url: String, stream: String) {
 
 #[tokio::main]
 async fn main() {
+    let _ = fix_path_env::fix();
     let websocket_state = Arc::new(Mutex::new(WebSocketState { 
         sender: None,
         response_channel: ResponseChannel { sender: None },

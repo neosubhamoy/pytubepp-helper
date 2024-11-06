@@ -17,6 +17,7 @@ serde_json = "1"
 tokio = { version = "1.39.2", features = ["full"] }
 tokio-tungstenite = "*"
 futures-util = "0.3.30"
+fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

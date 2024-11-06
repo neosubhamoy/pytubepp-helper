@@ -118,7 +118,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["app", "dmg"],
       "identifier": "com.neosubhamoy.pytubepp.helper",
       "icon": [
         "icons/32x32.png",

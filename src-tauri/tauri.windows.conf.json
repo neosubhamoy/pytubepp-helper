@@ -126,7 +126,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["msi", "nsis"],
       "identifier": "com.neosubhamoy.pytubepp.helper",
       "icon": [
         "icons/32x32.png",

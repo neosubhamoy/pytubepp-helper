@@ -12,10 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
+          # - platform: 'macos-latest'
+          #   args: '--target aarch64-apple-darwin'
+          # - platform: 'macos-latest'
+          #   args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
             args: ''
           - platform: 'windows-latest'
@@ -58,7 +58,7 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: 'pytubepp-helper-v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: CHANGELOG.md
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
