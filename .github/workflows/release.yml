@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*-*'
 
 name: 🚀 Release on GitHub
 jobs:
@@ -56,9 +56,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # tagName: v__VERSION__
-          # releaseName: 'pytubepp-helper-v__VERSION__'
-          # releaseBody: 'See the assets to download this version and install.'
+          tagName: ${{ github.ref_name }}
+          releaseName: ${{ github.event.repository.name }}-${{ github.ref_name }}
+          releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
