@@ -67,12 +67,19 @@ fn fetch_video_info(url: String) {
     #[cfg(target_os = "macos")]
     {
         let command = format!("pytubepp \"{}\" -i", &url);
+        let escaped_command = command.replace("\"", "\\\"");
+
+        let applescript = format!(
+            "tell application \"Terminal\"\n\
+            do script \"{}\"\n\
+            activate\n\
+            end tell",
+            escaped_command
+        );
+
         Command::new("osascript")
             .arg("-e")
-            .arg(format!(
-                "tell app \"Terminal\" to activate do script \"{}\"",
-                command
-            ))
+            .arg(applescript)
             .spawn()
             .unwrap();
     }
@@ -101,12 +108,19 @@ fn install_program(icommand: String) {
     #[cfg(target_os = "macos")]
     {
         let command = format!("{}", &icommand);
+        let escaped_command = command.replace("\"", "\\\"");
+
+        let applescript = format!(
+            "tell application \"Terminal\"\n\
+            do script \"{}\"\n\
+            activate\n\
+            end tell",
+            escaped_command
+        );
+
         Command::new("osascript")
             .arg("-e")
-            .arg(format!(
-                "tell app \"Terminal\" to activate do script \"{}\"",
-                command
-            ))
+            .arg(applescript)
             .spawn()
             .unwrap();
     }
@@ -135,12 +149,19 @@ fn download_stream(url: String, stream: String) {
     #[cfg(target_os = "macos")]
     {
         let command = format!("pytubepp \"{}\" -s {}", &url, &stream);
+        let escaped_command = command.replace("\"", "\\\"");
+
+        let applescript = format!(
+            "tell application \"Terminal\"\n\
+            do script \"{}\"\n\
+            activate\n\
+            end tell",
+            escaped_command
+        );
+
         Command::new("osascript")
             .arg("-e")
-            .arg(format!(
-                "tell app \"Terminal\" to activate do script \"{}\"",
-                command
-            ))
+            .arg(applescript)
             .spawn()
             .unwrap();
     }

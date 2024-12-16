@@ -24,10 +24,13 @@ dist-ssr
 *.sw?
 
 # Executables and manifests
-pytubepp-helper-msghost.exe
-pytubepp-helper-autostart.exe
-pytubepp-helper-msghost.json
-pytubepp-helper-msghost-moz.json
+src-tauri/pytubepp-helper-msghost.exe
+src-tauri/pytubepp-helper-autostart.exe
+src-tauri/pytubepp-helper-msghost.json
+src-tauri/pytubepp-helper-msghost-moz.json
+src-tauri/pytubepp-helper-msghost
+src-tauri/pytubepp-helper-autostart
+src-tauri/pytubepp-helper-autostart.plist
 
 # Certificate files
 certificate.pfx

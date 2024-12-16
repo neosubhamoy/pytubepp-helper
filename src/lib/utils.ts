@@ -2,6 +2,8 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { Command } from '@tauri-apps/api/shell';
 import { invoke } from "@tauri-apps/api";
+import { fs } from '@tauri-apps/api';
+import { join, resourceDir, homeDir } from '@tauri-apps/api/path';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -142,3 +144,36 @@ export function compareVersions (v1: string, v2: string) {
   }
   return 0;
 };
+
+export async function registerMacFiles() {
+  try {
+    const filesToCopy = [
+      { source: 'pytubepp-helper-autostart.plist', destination: 'Library/LaunchAgents/com.neosubhamoy.pytubepp.helper.plist', dir: 'Library/LaunchAgents/' },
+      { source: 'pytubepp-helper-msghost.json', destination: 'Library/Application Support/Google/Chrome/NativeMessagingHosts/com.neosubhamoy.pytubepp.helper.json', dir: 'Library/Application Support/Google/Chrome/NativeMessagingHosts/' },
+      { source: 'pytubepp-helper-msghost.json', destination: 'Library/Application Support/Chromium/NativeMessagingHosts/com.neosubhamoy.pytubepp.helper.json', dir: 'Library/Application Support/Chromium/NativeMessagingHosts/' },
+      { source: 'pytubepp-helper-msghost-moz.json', destination: 'Library/Application Support/Mozilla/NativeMessagingHosts/com.neosubhamoy.pytubepp.helper.json', dir: 'Library/Application Support/Mozilla/NativeMessagingHosts/' },
+    ];
+
+    const resourceDirPath = await resourceDir();
+    const homeDirPath = await homeDir();
+
+    for (const file of filesToCopy) {
+      const sourcePath = await join(resourceDirPath, file.source);
+      const destinationDir = await join(homeDirPath, file.dir);
+      const destinationPath = await join(homeDirPath, file.destination);
+
+      const dirExists = await fs.exists(destinationDir);
+      if (dirExists) {
+        await fs.copyFile(sourcePath, destinationPath);
+        console.log(`File ${file.source} copied successfully to ${destinationPath}`);
+      } else {
+        await fs.createDir(destinationDir, { recursive: true })
+        console.log(`Created dir ${destinationDir}`);
+        await fs.copyFile(sourcePath, destinationPath);
+        console.log(`File ${file.source} copied successfully to ${destinationPath}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error copying files:', error);
+  }
+}

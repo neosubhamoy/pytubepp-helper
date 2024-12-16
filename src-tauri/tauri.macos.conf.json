@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml",
-    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
+    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml && node copyMacFiles.js && npm run build",
     "devPath": "http://localhost:1422",
     "distDir": "../dist"
   },
@@ -89,6 +89,26 @@
           }
         ]
       },
+      "fs": {
+        "all": true,
+        "copyFile": true,
+        "exists": true,
+        "createDir": true,
+        "scope": [
+          "$HOME/Library/LaunchAgents/",
+          "$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts/",
+          "$HOME/Library/Application Support/Chromium/NativeMessagingHosts/",
+          "$HOME/Library/Application Support/Mozilla/NativeMessagingHosts/",
+          "$RESOURCE/pytubepp-helper-msghost.json",
+          "$RESOURCE/pytubepp-helper-msghost-moz.json",
+          "$RESOURCE/pytubepp-helper-msghost",
+          "$RESOURCE/pytubepp-helper-autostart",
+          "$RESOURCE/pytubepp-helper-autostart.plist"
+        ]
+      },
+      "path": {
+        "all": true
+      },
       "window": {
         "all": false,
         "close": true,
@@ -110,7 +130,7 @@
       {
         "title": "PytubePP Helper",
         "width": 500,
-        "height": 320
+        "height": 335
       }
     ],
     "security": {
@@ -131,7 +151,14 @@
         "minimumSystemVersion": "10.13",
         "license": "../LICENSE",
         "providerShortName": "neosubhamoy"
-      }
+      },
+      "resources": [
+        "pytubepp-helper-msghost.json",
+        "pytubepp-helper-msghost-moz.json",
+        "pytubepp-helper-msghost",
+        "pytubepp-helper-autostart",
+        "pytubepp-helper-autostart.plist"
+      ]
     },
     "systemTray": {
       "iconPath": "icons/32x32.png",

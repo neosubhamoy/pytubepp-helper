@@ -9,7 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { InstalledPrograms, WebSocketMessage, } from "./types";
-import { compareVersions, extractVersion, isInstalled, sendStreamInfo, detectWindows, detectDistro, extractDistroId, detectDistroBase, detectMacOs } from "./lib/utils";
+import { compareVersions, extractVersion, isInstalled, sendStreamInfo, detectWindows, detectDistro, extractDistroId, detectDistroBase, detectMacOs, registerMacFiles } from "./lib/utils";
 import { CircleCheck, TriangleAlert, CircleAlert } from 'lucide-react';
 
 function App() {
@@ -234,7 +234,14 @@ function App() {
       <div className="container">
         <div className={clsx("topbar flex justify-between items-center mt-5", !isWindows && "mx-3")}>
           <h1 className="text-xl font-bold">PytubePP Helper</h1>
-          <Button size="sm" onClick={checkAllPrograms}>Refresh</Button>
+          <div>
+            { isMacOs && macOsVersion && compareVersions(macOsVersion, '10.13') > 0 ?
+              <Button size="sm" onClick={registerMacFiles}>Register</Button>
+              :
+              null
+            }
+            <Button className="ml-3" size="sm" onClick={checkAllPrograms}>Refresh</Button>
+          </div>
         </div>
         { distroId && distroBase && distroBase === 'debian' ? /* Section for Debian */
         <div className="programstats mt-5 mx-3">

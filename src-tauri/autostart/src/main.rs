@@ -28,9 +28,24 @@ fn connect_with_retry(url: &str, max_attempts: u32) -> Result<websocket::sync::C
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    #[cfg(target_os = "windows")]
+    {
+        let _ = Command::new("pytubepp-helper.exe").spawn();
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        let _ = Command::new("pytubepp-helper").spawn();
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        let _ = Command::new("/Applications/pytubepp-helper.app/Contents/MacOS/pytubepp-helper").spawn();
+    }
+
     // Launch the main application
-    let _ = Command::new("pytubepp-helper")
-        .spawn();
+    // let _ = Command::new("pytubepp-helper")
+    //     .spawn();
 
     // Connect with the Tauri app
     let websocket_url = "ws://localhost:3030";
