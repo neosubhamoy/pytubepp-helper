@@ -5,9 +5,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const msghostSrc = path.join(__dirname, 'src-tauri', 'target', 'aarch64-apple-darwin', 'release', 'pytubepp-helper-msghost');
+const msghostSrc = path.join(__dirname, 'src-tauri', 'target', 'release', 'pytubepp-helper-msghost');
 const msghostDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-msghost');
-const autostartSrc = path.join(__dirname, 'src-tauri', 'target', 'aarch64-apple-darwin', 'release', 'pytubepp-helper-autostart');
+const autostartSrc = path.join(__dirname, 'src-tauri', 'target', 'release', 'pytubepp-helper-autostart');
 const autostartDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-autostart');
 const autostartPlistSrc = path.join(__dirname, 'src-tauri', 'autostart', 'pytubepp-helper-autostart.plist');
 const autostartPlistDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-autostart.plist');
