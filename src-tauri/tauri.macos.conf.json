@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && [[ \"$ARCH\" == \"aarch64-apple-darwin\" ]] && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml || cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
-    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && [[ \"$ARCH\" == \"aarch64-apple-darwin\" ]] && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml && node copyFiles.${ARCH}.js && npm run build || cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
+    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
+    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
     "devPath": "http://localhost:1422",
     "distDir": "../dist"
   },
