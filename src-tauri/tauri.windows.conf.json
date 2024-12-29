@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
-    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml && node copyFiles.js && npm run build",
+    "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && npm run dev",
+    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.js && npm run build",
     "devPath": "http://localhost:1422",
     "distDir": "../dist"
   },
@@ -93,8 +93,7 @@
         "scope": [
           "$RESOURCE/pytubepp-helper-msghost.json",
           "$RESOURCE/pytubepp-helper-msghost-moz.json",
-          "$RESOURCE/pytubepp-helper-msghost.exe",
-          "$RESOURCE/pytubepp-helper-autostart.exe"
+          "$RESOURCE/pytubepp-helper-msghost.exe"
         ]
       },
       "window": {
@@ -148,8 +147,7 @@
       "resources": [
         "pytubepp-helper-msghost.json",
         "pytubepp-helper-msghost-moz.json",
-        "pytubepp-helper-msghost.exe",
-        "pytubepp-helper-autostart.exe"
+        "pytubepp-helper-msghost.exe"
       ]
     },
     "systemTray": {

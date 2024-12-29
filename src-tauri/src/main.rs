@@ -170,10 +170,15 @@ fn download_stream(url: String, stream: String) {
 #[tokio::main]
 async fn main() {
     let _ = fix_path_env::fix();
+    
+    let args: Vec<String> = env::args().collect();
+    let start_hidden = args.contains(&"--hidden".to_string());
+
     let websocket_state = Arc::new(Mutex::new(WebSocketState { 
         sender: None,
         response_channel: ResponseChannel { sender: None },
     }));
+    
     let tray_menu = SystemTrayMenu::new()
         .add_item(CustomMenuItem::new("show".to_string(), "Show"))
         .add_item(CustomMenuItem::new("quit".to_string(), "Quit"));
@@ -207,6 +212,12 @@ async fn main() {
         })
         .manage(websocket_state.clone())
         .setup(move |app| {
+            let window = app.get_window("main").unwrap();
+            
+            if start_hidden {
+                window.hide().unwrap();
+            }
+
             let app_handle = app.handle();
             let ws_state = websocket_state.clone();
             tokio::spawn(async move {

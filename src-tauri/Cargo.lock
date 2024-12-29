@@ -2486,14 +2486,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pytubepp-helper-autostart"
-version = "0.1.0"
-dependencies = [
- "serde_json",
- "websocket",
-]
-
-[[package]]
 name = "pytubepp-helper-msghost"
 version = "0.1.0"
 dependencies = [

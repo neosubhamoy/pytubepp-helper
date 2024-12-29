@@ -43,7 +43,7 @@ ${StrLoc}
 !define MANUPRODUCTKEY "Software\${MANUFACTURER}\${PRODUCTNAME}"
 !define UNINSTALLERSIGNCOMMAND ""
 !define ESTIMATEDSIZE "0x002311"
-!define AUTOSTART_EXEC "pytubepp-helper-autostart.exe"
+!define AUTOSTART_EXEC "pytubepp-helper.exe"
 !define CHROME_REG_PATH "Software\Google\Chrome\NativeMessagingHosts\com.neosubhamoy.pytubepp.helper"
 !define FIREFOX_REG_PATH "Software\Mozilla\NativeMessagingHosts\com.neosubhamoy.pytubepp.helper"
 !define RUN_REG_PATH "Software\Microsoft\Windows\CurrentVersion\Run"
@@ -548,7 +548,7 @@ Section Install
 
   ; Copy resources
     CreateDirectory "$INSTDIR\"
-    File /a "/oname=pytubepp-helper-autostart.exe" "..\..\..\..\pytubepp-helper-autostart.exe"
+    ; File /a "/oname=pytubepp-helper-autostart.exe" "..\..\..\..\pytubepp-helper-autostart.exe"
     File /a "/oname=pytubepp-helper-msghost-moz.json" "..\..\..\..\pytubepp-helper-msghost-moz.json"
     File /a "/oname=pytubepp-helper-msghost.exe" "..\..\..\..\pytubepp-helper-msghost.exe"
     File /a "/oname=pytubepp-helper-msghost.json" "..\..\..\..\pytubepp-helper-msghost.json"
@@ -585,7 +585,7 @@ Section Install
   WriteRegStr HKCU "${FIREFOX_REG_PATH}" "" "$INSTDIR\pytubepp-helper-msghost-moz.json"
 
   ; Add entry for automatic startup with Windows
-  WriteRegStr HKCU "${RUN_REG_PATH}" "${PRODUCTNAME}" "$\"$INSTDIR\${AUTOSTART_EXEC}$\""
+  WriteRegStr HKCU "${RUN_REG_PATH}" "${PRODUCTNAME}" "$\"$INSTDIR\${AUTOSTART_EXEC}$\" --hidden"
 
   ; Create start menu shortcut (GUI)
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -670,7 +670,7 @@ Section Uninstall
   Delete "$INSTDIR\${MAINBINARYNAME}.exe"
 
   ; Delete resources
-    Delete "$INSTDIR\pytubepp-helper-autostart.exe"
+    ; Delete "$INSTDIR\pytubepp-helper-autostart.exe"
     Delete "$INSTDIR\pytubepp-helper-msghost-moz.json"
     Delete "$INSTDIR\pytubepp-helper-msghost.exe"
     Delete "$INSTDIR\pytubepp-helper-msghost.json"

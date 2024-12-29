@@ -7,8 +7,6 @@ const __dirname = path.dirname(__filename);
 
 const msghostSrc = path.join(__dirname, 'src-tauri', 'target', 'aarch64-apple-darwin', 'release', 'pytubepp-helper-msghost');
 const msghostDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-msghost');
-const autostartSrc = path.join(__dirname, 'src-tauri', 'target', 'aarch64-apple-darwin', 'release', 'pytubepp-helper-autostart');
-const autostartDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-autostart');
 const autostartPlistSrc = path.join(__dirname, 'src-tauri', 'autostart', 'pytubepp-helper-autostart.plist');
 const autostartPlistDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-autostart.plist');
 const msghostManifestMacChromeSrc = path.join(__dirname, 'src-tauri', 'msghost-manifest', 'macos', 'chrome', 'com.neosubhamoy.pytubepp.helper.json');
@@ -17,7 +15,7 @@ const msghostManifestMacFirefoxSrc = path.join(__dirname, 'src-tauri', 'msghost-
 const msghostManifestMacFirefoxDest = path.join(__dirname, 'src-tauri', 'pytubepp-helper-msghost-moz.json');
 
 fs.copyFileSync(msghostSrc, msghostDest);
-fs.copyFileSync(autostartSrc, autostartDest);
+// fs.copyFileSync(autostartSrc, autostartDest);
 fs.copyFileSync(autostartPlistSrc, autostartPlistDest);
 fs.copyFileSync(msghostManifestMacChromeSrc, msghostManifestMacChromeDest);
 fs.copyFileSync(msghostManifestMacFirefoxSrc, msghostManifestMacFirefoxDest);

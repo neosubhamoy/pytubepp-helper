@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --manifest-path=./src-tauri/autostart/Cargo.toml",
-    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --manifest-path=./src-tauri/autostart/Cargo.toml",
+    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml",
+    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml",
     "devPath": "http://localhost:1422",
     "distDir": "../dist"
   },
@@ -134,7 +134,6 @@
           "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
           "/usr/lib/mozilla/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/firefox/com.neosubhamoy.pytubepp.helper.json",
           "/usr/bin/pytubepp-helper-msghost": "./target/release/pytubepp-helper-msghost",
-          "/usr/bin/pytubepp-helper-autostart": "./target/release/pytubepp-helper-autostart",
           "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
         }
       },
@@ -148,7 +147,6 @@
           "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
           "/usr/lib/mozilla/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/firefox/com.neosubhamoy.pytubepp.helper.json",
           "/usr/bin/pytubepp-helper-msghost": "./target/release/pytubepp-helper-msghost",
-          "/usr/bin/pytubepp-helper-autostart": "./target/release/pytubepp-helper-autostart",
           "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
         }
       }

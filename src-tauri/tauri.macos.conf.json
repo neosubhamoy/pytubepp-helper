@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && npm run dev",
-    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && cargo build --release --target=$ARCH --manifest-path=./src-tauri/autostart/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
+    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && npm run dev",
+    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
     "devPath": "http://localhost:1422",
     "distDir": "../dist"
   },
@@ -102,7 +102,6 @@
           "$RESOURCE/pytubepp-helper-msghost.json",
           "$RESOURCE/pytubepp-helper-msghost-moz.json",
           "$RESOURCE/pytubepp-helper-msghost",
-          "$RESOURCE/pytubepp-helper-autostart",
           "$RESOURCE/pytubepp-helper-autostart.plist"
         ]
       },
@@ -156,7 +155,6 @@
         "pytubepp-helper-msghost.json",
         "pytubepp-helper-msghost-moz.json",
         "pytubepp-helper-msghost",
-        "pytubepp-helper-autostart",
         "pytubepp-helper-autostart.plist"
       ]
     },

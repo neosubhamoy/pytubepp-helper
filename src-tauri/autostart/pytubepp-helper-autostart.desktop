@@ -2,7 +2,7 @@
 Type=Application
 Name=pytubepp-helper
 Icon=pytubepp-helper
-Comment=pytubepp-helper autostart script
-Exec=/usr/bin/pytubepp-helper-autostart
+Comment=pytubepp-helper autostart
+Exec=/usr/bin/pytubepp-helper --hidden
 StartupNotify=false
 Terminal=false

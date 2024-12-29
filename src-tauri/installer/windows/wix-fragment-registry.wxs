@@ -10,7 +10,7 @@
           <RegistryValue Type="string" Value="[INSTALLDIR]pytubepp-helper-msghost-moz.json" KeyPath="no" />
         </RegistryKey>
         <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
-          <RegistryValue Name="pytubepp-helper" Type="string" Value="[INSTALLDIR]pytubepp-helper-autostart.exe" KeyPath="no" />
+          <RegistryValue Name="pytubepp-helper" Type="string" Value="&quot;[INSTALLDIR]pytubepp-helper.exe&quot; --hidden" KeyPath="no" />
         </RegistryKey>
       </Component>
     </DirectoryRef>

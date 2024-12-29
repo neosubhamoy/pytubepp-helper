@@ -4,8 +4,11 @@
     <dict>
         <key>Label</key>
         <string>com.neosubhamoy.pytubepp.helper</string>
-        <key>Program</key>
-        <string>/Applications/pytubepp-helper.app/Contents/MacOS/pytubepp-helper</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/Applications/pytubepp-helper.app/Contents/MacOS/pytubepp-helper</string>
+            <string>--hidden</string>
+        </array>
         <key>RunAtLoad</key>
         <true/>
     </dict>
