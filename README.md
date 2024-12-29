@@ -17,7 +17,7 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
 ### 📎 Pre-Requirements
 
-- [Python (>3.8)](https://www.python.org/downloads/)
+- [Python](https://www.python.org/downloads/) (>3.8)
 - [FFmpeg](https://www.ffmpeg.org)
 - [PytubePP](https://github.com/neosubhamoy/pytubepp)
 * These requirements can be installed using PytubePP Helper (post installation) if [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget/#install-winget) (for Windows users) / [Homebrew](https://brew.sh) (for MacOS users) is installed in your system
@@ -37,13 +37,12 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
    2. Now open PytubePP Helper (from system tray not from start menu or shotcut) you will see (blue) 'install' buttons. First click on the install button on the right side of 'Python', a cmd window will popup to install Python. after the installation is finished then close the cmd window and now install 'FFmpeg' by clicking on the next install button. after the installation is finished close the cmd window and restart your Computer.
 
-   3. Again open PytubePP Helper (from system tray not from start menu or shotcut) and install PytubePP at last. after it finishes you can close the cmd window. Now click on the 'Refresh' button and you will see the 'Ready' message. Then close PytubePP Helper
+   3. Again open PytubePP Helper and install PytubePP at the end. after it finishes you can close the cmd window. Now click on the 'Refresh' button and you will see the 'Ready' message. Then close PytubePP Helper
 
    4. You can now add the [PytubePP Extension](https://github.com/neosubhamoy/pytubepp-extension) in your browser and it should work properly with [PytubePP](https://github.com/neosubhamoy/pytubepp)
 
    5. Pro Tips:
    - Make sure PytubePP Helper is always running in the background (system tray) otherwise PytubePP Extension will not work properly.
-   - Always open PytubePP Helper from system tray if it's already running. if you open PytubePP Helper from start menu or shotcut when PytubePP Helper is already running in system tray then two instances of PytubePP Helper will run on the same time which may cause the app to malfunction!
    - PytubePP Helper by default always autostarts itself when Windows starts. Make sure autostart is not disabled for PytubePP Helper in Task Manager (Startup apps tab)
 
 * **>> LINUX:**
@@ -64,7 +63,6 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
    3. Pro Tips:
    - Make sure PytubePP Helper is always running in the background (Appindicator) otherwise PytubePP Extension will not work properly.
-   - Always open PytubePP Helper from Appindicator if it's already running. if you open PytubePP Helper from programs menu or shotcut when PytubePP Helper is already running in Appindicator then two instances of PytubePP Helper will run on the same time which may cause the app to malfunction!
    - PytubePP Helper by default always autostarts itself when Linux Distro starts. Make sure autostart is not disabled for PytubePP Helper in your distro's Startup Manager / Applications
 
 * **>> MAC OS:**
