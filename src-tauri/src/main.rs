@@ -1,11 +1,11 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{process::Command, sync::Arc, env};
+use std::{process::Command, sync::Arc, env, time::Duration};
 use serde_json::Value;
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
-use tokio::{net::{TcpListener, TcpStream}, sync::{Mutex, oneshot}};
-use tokio_tungstenite::accept_async;
+use tokio::{net::{TcpListener, TcpStream}, sync::{Mutex, oneshot}, time::sleep};
+use tokio_tungstenite::{accept_async, connect_async};
 use futures_util::{SinkExt, StreamExt};
 
 struct ResponseChannel {
@@ -15,6 +15,20 @@ struct ResponseChannel {
 struct WebSocketState {
     sender: Option<futures_util::stream::SplitSink<tokio_tungstenite::WebSocketStream<TcpStream>, tokio_tungstenite::tungstenite::Message>>,
     response_channel: ResponseChannel,
+}
+
+async fn is_another_instance_running() -> bool {
+    match connect_async("ws://127.0.0.1:3030").await {
+        Ok(_) => true,
+        Err(_) => false
+    }
+}
+
+async fn try_bind_ws_port() -> Option<TcpListener> {
+    match TcpListener::bind("127.0.0.1:3030").await {
+        Ok(listener) => Some(listener),
+        Err(_) => None
+    }
 }
 
 #[tauri::command]
@@ -171,6 +185,31 @@ fn download_stream(url: String, stream: String) {
 async fn main() {
     let _ = fix_path_env::fix();
     
+    // Check if another instance is running
+    if is_another_instance_running().await {
+        println!("Another instance is already running. Exiting...");
+        std::process::exit(0);
+    }
+
+    // Try to bind to the WebSocket port with a few retries
+    let mut listener = None;
+    for _ in 0..3 {
+        if let Some(l) = try_bind_ws_port().await {
+            listener = Some(l);
+            break;
+        }
+        sleep(Duration::from_millis(100)).await;
+    }
+
+    // If we couldn't bind to the port after retries, assume another instance is running
+    let listener = match listener {
+        Some(l) => l,
+        None => {
+            println!("Could not bind to WebSocket port. Another instance might be running. Exiting...");
+            std::process::exit(0);
+        }
+    };
+    
     let args: Vec<String> = env::args().collect();
     let start_hidden = args.contains(&"--hidden".to_string());
 
@@ -220,8 +259,8 @@ async fn main() {
 
             let app_handle = app.handle();
             let ws_state = websocket_state.clone();
+            
             tokio::spawn(async move {
-                let listener = TcpListener::bind("127.0.0.1:3030").await.unwrap();
                 println!("WebSocket server listening on ws://127.0.0.1:3030");
                 while let Ok((stream, _)) = listener.accept().await {
                     let app_handle = app_handle.clone();
