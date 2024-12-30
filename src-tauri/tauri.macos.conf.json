@@ -33,6 +33,11 @@
             "args": ["^ID=", "/etc/os-release"]
           },
           {
+            "name": "detect-pkgmngr",
+            "cmd": "sh",
+            "args": ["-c", "command -v apt || command -v dnf || command -v pacman"]
+          },
+          {
             "name": "is-apt-installed",
             "cmd": "apt",
             "args": ["--version"]

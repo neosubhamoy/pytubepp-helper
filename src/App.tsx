@@ -9,7 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { InstalledPrograms, WebSocketMessage, } from "./types";
-import { compareVersions, extractVersion, isInstalled, sendStreamInfo, detectWindows, detectDistro, extractDistroId, detectDistroBase, detectMacOs, registerMacFiles } from "./lib/utils";
+import { compareVersions, extractVersion, isInstalled, sendStreamInfo, detectWindows, detectDistro, extractDistroId, detectMacOs, registerMacFiles, detectPackageManager, extractPkgMngrName } from "./lib/utils";
 import { CircleCheck, TriangleAlert, CircleAlert } from 'lucide-react';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
   const [isMacOs, setIsMacOs] = useState<boolean>(false)
   const [macOsVersion, setMacOsVersion] = useState<string | null>(null)
   const [distroId, setDistroId] = useState<string | null>(null)
-  const [distroBase, setDistroBase] = useState<string | null>(null)
+  const [distroPkgMngr, setDistroPkgMngr] = useState<string | null>(null)
   const [installedPrograms, setInstalledPrograms] = useState<InstalledPrograms>({
     winget: {
       installed: false,
@@ -218,7 +218,10 @@ function App() {
           const distroResult = await detectDistro();
           if (distroResult) {
             setDistroId(extractDistroId(distroResult));
-            setDistroBase(detectDistroBase(extractDistroId(distroResult)));
+            const distroPkgMngrResult = await detectPackageManager();
+            if (distroPkgMngrResult) {
+              setDistroPkgMngr(extractPkgMngrName(distroPkgMngrResult));
+            }
           }
           break;
 
@@ -243,7 +246,7 @@ function App() {
             <Button className="ml-3" size="sm" onClick={checkAllPrograms}>Refresh</Button>
           </div>
         </div>
-        { distroId && distroBase && distroBase === 'debian' ? /* Section for Debian */
+        { distroId && distroPkgMngr && distroPkgMngr === 'apt' ? /* Section for Debian */
         <div className="programstats mt-5 mx-3">
           <div className="programitem flex items-center justify-between">
             <p><b>Python:</b> {installedPrograms.python3.installed ? 'installed' : 'not installed'} {installedPrograms.python3.version ? `(${installedPrograms.python3.version})` : ''}</p>
@@ -285,7 +288,7 @@ function App() {
             </Alert>
           : null}
         </div>
-        : distroId && distroBase && distroBase === 'rhel' ? /* Section for RHEL */
+        : distroId && distroPkgMngr && distroPkgMngr === 'dnf' ? /* Section for RHEL */
         <div className="programstats mt-5 mx-3">
           <div className="programitem flex items-center justify-between">
             <p><b>Python:</b> {installedPrograms.python3.installed ? 'installed' : 'not installed'} {installedPrograms.python3.version ? `(${installedPrograms.python3.version})` : ''}</p>

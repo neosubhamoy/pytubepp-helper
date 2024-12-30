@@ -65,18 +65,25 @@ export async function detectDistro(): Promise<string | null> {
   }
 }
 
-export function detectDistroBase(distro: string | null): string | null{
-  if(distro) {
-    if(['debian', 'ubuntu', 'pop', 'kali'].includes(distro)) {
-      return 'debian';
-    } else if (['rhel', 'fedora', 'centos', 'rocky'].includes(distro)) {
-      return 'rhel';
+export async function detectPackageManager(): Promise<string | null> {
+  try{
+    const output = await new Command('detect-pkgmngr', ['-c', 'command -v apt || command -v dnf || command -v pacman']).execute();
+    if (output.code === 0) {
+      return output.stdout;
     } else {
-      return 'other';
+      return output.stdout;
     }
-  } else {
+  } catch (error) {
+    console.error(error);
     return null;
   }
+}
+
+export function extractPkgMngrName(path: string): string | null {
+  const pattern = /^\s*(.*\/)?([^\/\s]+)\s*$/;
+  const match = path.trim().match(pattern);
+  if (!match) return null;
+  return match[2];
 }
 
 export function extractDistroId(input: string): string | null {
