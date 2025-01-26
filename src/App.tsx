@@ -367,11 +367,11 @@ function App() {
         <div className="programstats mt-5 mx-3">
           <div className="programitem flex items-center justify-between">
             <p><b>Python:</b> {installedPrograms.python3.installed ? 'installed' : 'not installed'} {installedPrograms.python3.version ? `(${installedPrograms.python3.version})` : ''}</p>
-            {installedPrograms.python3.installed ? installedPrograms.python3.version ? compareVersions(installedPrograms.python3.version, '3.8') < 0 ? <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install python3 -y'})}}>install</Button> : <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : null}
+            {installedPrograms.python3.installed ? installedPrograms.python3.version ? compareVersions(installedPrograms.python3.version, '3.8') < 0 ? <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install python'})}}>install</Button> : <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : null}
           </div>
           <div className="programitem flex items-center justify-between">
             <p><b>FFmpeg:</b> {installedPrograms.ffmpeg.installed ? 'installed' : 'not installed'} {installedPrograms.ffmpeg.version ? `(${installedPrograms.ffmpeg.version})` : ''}</p>
-            {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install ffmpeg -y'})}}>install</Button> : null}
+            {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install ffmpeg'})}}>install</Button> : null}
           </div>
           <div className="programitem flex items-center justify-between">
             <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
