@@ -98,7 +98,7 @@ export function extractVersion(output: string): string | null {
       /Python (\d+\.\d+\.\d+)/,                 // Pattern for Python
       /pytubefix (\d+\.\d+\.\d+)/,              // Pattern for pytubefix
       /pytubepp (\d+\.\d+\.\d+)/,               // Pattern for pytubepp
-      /v(\d+\.\d+\.\d+)/,                       // Pattern for winget
+      /v(\d+\.\d+\.\d+)/,                       // Pattern for winget, Node.js
       /pip (\d+\.\d+)/,                         // Pattern for pip
       /OS Version:.*Build (\d+)/,               // Pattern for Windows build
       /apt (\d+\.\d+\.\d+)/,                    // Pattern for apt

@@ -35,6 +35,10 @@ export interface InstalledPrograms {
         installed: boolean;
         version: string | null;
     };
+    nodejs: {
+        installed: boolean;
+        version: string | null;
+    };
     pytubepp: {
         installed: boolean;
         version: string | null;

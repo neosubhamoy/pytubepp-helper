@@ -65,6 +65,10 @@ function App() {
       installed: false,
       version: null,
     },
+    nodejs: {
+      installed: false,
+      version: null,
+    },
     pytubepp: {
       installed: false,
       version: null,
@@ -181,6 +185,15 @@ function App() {
         }
       }));
     });
+    isInstalled('nodejs', '--version').then((result) => {
+      setInstalledPrograms((prevState) => ({
+        ...prevState,
+        nodejs: {
+          installed: result.installed,
+          version: result.output ? extractVersion(result.output) : null,
+        }
+      }));
+    });
     isInstalled('pytubepp', '--version').then((result) => {
       setInstalledPrograms((prevState) => ({
         ...prevState,
@@ -257,6 +270,10 @@ function App() {
             {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.apt.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo apt install ffmpeg -y'})}}>install</Button> : null}
           </div>
           <div className="programitem flex items-center justify-between">
+            <p><b>Node.js:</b> {installedPrograms.nodejs.installed ? 'installed' : 'not installed'} {installedPrograms.nodejs.version ? `(${installedPrograms.nodejs.version})` : ''}</p>
+            {installedPrograms.nodejs.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.apt.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo apt install nodejs -y'})}}>install</Button> : null}
+          </div>
+          <div className="programitem flex items-center justify-between">
             <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
             {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
           </div>
@@ -296,7 +313,11 @@ function App() {
           </div>
           <div className="programitem flex items-center justify-between">
             <p><b>FFmpeg:</b> {installedPrograms.ffmpeg.installed ? 'installed' : 'not installed'} {installedPrograms.ffmpeg.version ? `(${installedPrograms.ffmpeg.version})` : ''}</p>
-            {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.dnf.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo dnf install ffmpeg-free -y'})}}>install</Button> : null}
+            {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.dnf.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo dnf install ffmpeg -y'})}}>install</Button> : null}
+          </div>
+          <div className="programitem flex items-center justify-between">
+            <p><b>Node.js:</b> {installedPrograms.nodejs.installed ? 'installed' : 'not installed'} {installedPrograms.nodejs.version ? `(${installedPrograms.nodejs.version})` : ''}</p>
+            {installedPrograms.nodejs.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.dnf.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo dnf install nodejs -y'})}}>install</Button> : null}
           </div>
           <div className="programitem flex items-center justify-between">
             <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
@@ -341,6 +362,10 @@ function App() {
             {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.winget.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'winget install ffmpeg'})}}>install</Button> : null}
           </div>
           <div className="programitem flex items-center justify-between">
+            <p><b>Node.js:</b> {installedPrograms.nodejs.installed ? 'installed' : 'not installed'} {installedPrograms.nodejs.version ? `(${installedPrograms.nodejs.version})` : ''}</p>
+            {installedPrograms.nodejs.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.winget.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'winget install OpenJS.NodeJS.LTS'})}}>install</Button> : null}
+          </div>
+          <div className="programitem flex items-center justify-between">
             <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
             {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip install pytubepp'})}}>install</Button> : null}
           </div>
@@ -372,6 +397,10 @@ function App() {
           <div className="programitem flex items-center justify-between">
             <p><b>FFmpeg:</b> {installedPrograms.ffmpeg.installed ? 'installed' : 'not installed'} {installedPrograms.ffmpeg.version ? `(${installedPrograms.ffmpeg.version})` : ''}</p>
             {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install ffmpeg'})}}>install</Button> : null}
+          </div>
+          <div className="programitem flex items-center justify-between">
+            <p><b>Node.js:</b> {installedPrograms.nodejs.installed ? 'installed' : 'not installed'} {installedPrograms.nodejs.version ? `(${installedPrograms.nodejs.version})` : ''}</p>
+            {installedPrograms.nodejs.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.brew.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'brew install node'})}}>install</Button> : null}
           </div>
           <div className="programitem flex items-center justify-between">
             <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>

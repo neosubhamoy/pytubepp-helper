@@ -83,6 +83,11 @@
             "args": ["-version"]
           },
           {
+            "name": "is-nodejs-installed",
+            "cmd": "node",
+            "args": ["--version"]
+          },
+          {
             "name": "is-pytubepp-installed",
             "cmd": "pytubepp",
             "args": ["--version"]
@@ -114,8 +119,8 @@
     "windows": [
       {
         "title": "PytubePP Helper",
-        "width": 500,
-        "height": 320
+        "width": 510,
+        "height": 345
       }
     ],
     "security": {
