@@ -12,6 +12,7 @@ tauri-build = { version = "1", features = [] }
 
 [dependencies]
 tauri = { version = "1", features = [ "os-all", "process-relaunch", "window-start-dragging", "window-close", "window-unmaximize", "process-exit", "window-show", "window-unminimize", "window-hide", "window-minimize", "window-maximize", "system-tray", "shell-all"] }
+directories = "5.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1.39.2", features = ["full"] }

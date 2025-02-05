@@ -180,7 +180,9 @@ export async function registerMacFiles() {
         console.log(`File ${file.source} copied successfully to ${destinationPath}`);
       }
     }
+    return { success: true, message: 'Registered successfully' }
   } catch (error) {
     console.error('Error copying files:', error);
+    return { success: false, message: 'Failed to register' }
   }
 }

@@ -1,3 +1,16 @@
+export interface Config {
+    port: number;
+}
+
+export interface PlatformInfo {
+    isWindows: boolean;
+    windowsVersion: string | null;
+    isMacOs: boolean;
+    macOsVersion: string | null;
+    distroId: string | null;
+    distroPkgMngr: string | null;
+}
+
 export interface InstalledPrograms {
     winget: {
         installed: boolean;

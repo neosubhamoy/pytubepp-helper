@@ -1,9 +1,16 @@
+mod config;
+use config::load_config;
 use std::io::{self, Read, Write};
 use websocket::client::ClientBuilder;
 use websocket::OwnedMessage;
 use std::thread::sleep;
 use std::time::Duration;
 use serde_json::Value;
+
+fn get_websocket_url() -> String {
+    let config = load_config();
+    format!("ws://localhost:{}", config.port)
+}
 
 fn connect_with_retry(url: &str, max_attempts: u32) -> Result<websocket::sync::Client<std::net::TcpStream>, Box<dyn std::error::Error>> {
     let mut attempts = 0;
@@ -70,10 +77,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let parsed: Value = serde_json::from_str(&input)?;
 
-    let websocket_url = "ws://localhost:3030";
+    let websocket_url = get_websocket_url();
     eprintln!("Attempting to connect to {}", websocket_url);
 
-    let mut client = match connect_with_retry(websocket_url, 2) {
+    let mut client = match connect_with_retry(&websocket_url, 2) {
         Ok(client) => client,
         Err(e) => {
             eprintln!("Failed to connect after multiple attempts: {:?}", e);
