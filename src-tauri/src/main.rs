@@ -255,10 +255,11 @@ fn install_program(icommand: String) {
 }
 
 #[tauri::command]
-fn download_stream(url: String, stream: String) {
+fn download_stream(url: String, stream: String, caption: Option<String>) {
+    let caption = caption.unwrap_or("none".to_string());
     #[cfg(target_os = "windows")]
     {
-        let command = format!("pytubepp \"{}\" -s {}", &url, &stream);
+        let command = format!("pytubepp \"{}\" -s {} -c {}", &url, &stream, &caption);
         Command::new("cmd")
             .args(["/k", command.as_str()])
             .spawn()
@@ -267,7 +268,7 @@ fn download_stream(url: String, stream: String) {
 
     #[cfg(target_os = "linux")]
     {
-        let command = format!("pytubepp \"{}\" -s {}", &url, &stream);
+        let command = format!("pytubepp \"{}\" -s {} -c {}", &url, &stream, &caption);
         Command::new("gnome-terminal")
             .args(["--", "bash", "-c", command.as_str()])
             .spawn()
@@ -276,7 +277,7 @@ fn download_stream(url: String, stream: String) {
 
     #[cfg(target_os = "macos")]
     {
-        let command = format!("pytubepp \"{}\" -s {}", &url, &stream);
+        let command = format!("pytubepp \"{}\" -s {} -c {}", &url, &stream, &caption);
         let escaped_command = command.replace("\"", "\\\"");
 
         let applescript = format!(

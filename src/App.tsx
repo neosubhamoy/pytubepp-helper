@@ -26,7 +26,7 @@ function App({ children }: { children: React.ReactNode }) {
       } else if(event.payload.command === 'download-stream') {
         const startDownload = async () => {
           try {
-            await invoke('download_stream',  { url: event.payload.url, stream: event.payload.argument });
+            await invoke('download_stream',  { url: event.payload.url, stream: event.payload.argument.split(' ')[0], caption: event.payload.argument.split(' ')[1] });
             await invoke('receive_frontend_response',  { response: 'Download started' });
           } catch (error) {
             console.error(error);
