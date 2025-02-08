@@ -3,8 +3,9 @@ import { z } from "zod";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
+import { getVersion } from "@tauri-apps/api/app";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, History, Save } from "lucide-react";
+import { ArrowLeft, Github, Globe, History, Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Config, PlatformInfo } from "@/types";
 import { useForm } from "react-hook-form";
@@ -23,6 +24,7 @@ export default function SettingsPage() {
     const { toast } = useToast();
     const [platformInfo, setPlatformInfo] = useState<PlatformInfo | null>(null);
     const [appConfig, setAppConfig] = useState<Config | null>(null);
+    const [appVersion, setAppVersion] = useState<string | null>(null);
     const [isFormDirty, setIsFormDirty] = useState(false);
     const saveButtonRef = useRef<HTMLButtonElement>(null);
     
@@ -55,6 +57,11 @@ export default function SettingsPage() {
 
     useEffect(() => {
         getPlatformInfo().then(setPlatformInfo).catch(console.error);
+        const getAppVersion = async () => {
+            const version = await getVersion();
+            setAppVersion(version);
+        }
+        getAppVersion().catch(console.error);
     }, [])
 
     const updateConfig = async () => {
@@ -142,7 +149,7 @@ export default function SettingsPage() {
                 </div>
             </div>
             <div className={clsx("mt-5", !platformInfo?.isWindows && "mx-3")}>
-                <div className="flex flex-col">
+                <div className="flex flex-col min-h-[55vh]">
                     <Form {...settingsForm}>
                         <form onSubmit={settingsForm.handleSubmit(updateConfig)}>
                             <FormField
@@ -176,6 +183,22 @@ export default function SettingsPage() {
                             <Button className="hidden" ref={saveButtonRef} type="submit">Save</Button>
                         </form>
                     </Form>
+                </div>
+                <div className="flex justify-between items-center border-t border-muted-foreground/50 pt-2">
+                    <div className="flex flex-col">
+                        <p>PytubePP Helper <span className="text-muted-foreground">|</span> <span className="text-sm text-muted-foreground">v{appVersion}-beta</span></p>
+                        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} - <a href="https://github.com/neosubhamoy/pytubepp-helper/blob/main/LICENSE" target="_blank">MIT License</a> - Made with ❤️ by <a href="https://neosubhamoy.com" target="_blank">Subhamoy</a></p>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex justify-center items-center gap-2">
+                            <a href="https://pytubepp.neosubhamoy.com" target="_blank" title="website">
+                                <Globe className="w-4 h-4 text-muted-foreground"/>
+                            </a>
+                            <a href="https://github.com/neosubhamoy/pytubepp-helper" target="_blank" title="github">
+                                <Github className="w-4 h-4 text-muted-foreground"/>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
