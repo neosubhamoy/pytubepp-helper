@@ -2,141 +2,40 @@
   "build": {
     "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml",
     "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml",
-    "devPath": "http://localhost:1422",
-    "distDir": "../dist"
+    "devUrl": "http://localhost:1422",
+    "frontendDist": "../dist"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "os": {
-        "all": true
-      },
-      "shell": {
-        "all": true,
-        "execute": true,
-        "sidecar": true,
-        "open": true,
-        "scope": [
-          {
-            "name": "detect-windows",
-            "cmd": "systeminfo",
-            "args": []
-          },
-          {
-            "name": "detect-macos",
-            "cmd": "sw_vers",
-            "args": []
-          },
-          {
-            "name": "detect-distro",
-            "cmd": "grep",
-            "args": ["^ID=", "/etc/os-release"]
-          },
-          {
-            "name": "detect-pkgmngr",
-            "cmd": "sh",
-            "args": ["-c", "command -v apt || command -v dnf || command -v pacman"]
-          },
-          {
-            "name": "is-apt-installed",
-            "cmd": "apt",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-dnf-installed",
-            "cmd": "dnf",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-python3-installed",
-            "cmd": "python3",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pip3-installed",
-            "cmd": "pip3",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-winget-installed",
-            "cmd": "winget",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-homebrew-installed",
-            "cmd": "brew",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-python-installed",
-            "cmd": "python",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pip-installed",
-            "cmd": "pip",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-ffmpeg-installed",
-            "cmd": "ffmpeg",
-            "args": ["-version"]
-          },
-          {
-            "name": "is-nodejs-installed",
-            "cmd": "node",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pytubepp-installed",
-            "cmd": "pytubepp",
-            "args": ["--version"]
-          },
-          {
-            "name": "fetch-video-info",
-            "cmd": "pytubepp",
-            "args": [{ "validator": "\\S+" }, "--raw-info"]
-          }
-        ]
-      },
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true
-      },
-      "process": {
-        "all": false,
-        "exit": true,
-        "relaunch": true
-      }
-    },
+  "identifier": "com.neosubhamoy.pytubepp.helper",
+  "plugins": {},
+  "app": {
     "windows": [
       {
         "title": "PytubePP Helper",
         "width": 510,
-        "height": 345
+        "height": 345,
+        "useHttpsScheme": true
       }
     ],
     "security": {
-      "csp": null
-    },
-    "bundle": {
-      "active": true,
-      "targets": ["deb", "rpm"],
-      "identifier": "com.neosubhamoy.pytubepp.helper",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
+      "csp": null,
+      "capabilities": [
+        "main-capability",
+        "shell-scope"
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["deb", "rpm"],
+    "licenseFile": "../LICENSE",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
       "deb": {
         "depends": ["python3-pip", "ffmpeg", "gnome-terminal"],
         "files": {
@@ -150,7 +49,6 @@
       "rpm": {
         "epoch": 0,
         "release": "1",
-        "license": "MIT",
         "depends": ["python3-pip", "ffmpeg", "gnome-terminal"],
         "files": {
           "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
@@ -160,10 +58,6 @@
           "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
         }
       }
-    },
-    "systemTray": {
-      "iconPath": "icons/32x32.png",
-      "iconAsTemplate": true
     }
   }
 }

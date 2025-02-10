@@ -2,175 +2,71 @@
   "build": {
     "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && npm run dev",
     "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
-    "devPath": "http://localhost:1422",
-    "distDir": "../dist"
+    "devUrl": "http://localhost:1422",
+    "frontendDist": "../dist"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "os": {
-        "all": true
-      },
-      "shell": {
-        "all": true,
-        "execute": true,
-        "sidecar": true,
-        "open": true,
-        "scope": [
-          {
-            "name": "detect-windows",
-            "cmd": "systeminfo",
-            "args": []
-          },
-          {
-            "name": "detect-macos",
-            "cmd": "sw_vers",
-            "args": []
-          },
-          {
-            "name": "detect-distro",
-            "cmd": "grep",
-            "args": ["^ID=", "/etc/os-release"]
-          },
-          {
-            "name": "detect-pkgmngr",
-            "cmd": "sh",
-            "args": ["-c", "command -v apt || command -v dnf || command -v pacman"]
-          },
-          {
-            "name": "is-apt-installed",
-            "cmd": "apt",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-dnf-installed",
-            "cmd": "dnf",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-python3-installed",
-            "cmd": "python3",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pip3-installed",
-            "cmd": "pip3",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-winget-installed",
-            "cmd": "winget",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-homebrew-installed",
-            "cmd": "brew",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-python-installed",
-            "cmd": "python",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pip-installed",
-            "cmd": "pip",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-ffmpeg-installed",
-            "cmd": "ffmpeg",
-            "args": ["-version"]
-          },
-          {
-            "name": "is-nodejs-installed",
-            "cmd": "node",
-            "args": ["--version"]
-          },
-          {
-            "name": "is-pytubepp-installed",
-            "cmd": "pytubepp",
-            "args": ["--version"]
-          },
-          {
-            "name": "fetch-video-info",
-            "cmd": "pytubepp",
-            "args": [{ "validator": "\\S+" }, "--raw-info"]
-          }
-        ]
-      },
-      "fs": {
-        "all": true,
-        "copyFile": true,
-        "exists": true,
-        "createDir": true,
-        "scope": [
-          "$HOME/Library/LaunchAgents/",
-          "$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts/",
-          "$HOME/Library/Application Support/Chromium/NativeMessagingHosts/",
-          "$HOME/Library/Application Support/Mozilla/NativeMessagingHosts/",
-          "$RESOURCE/pytubepp-helper-msghost.json",
-          "$RESOURCE/pytubepp-helper-msghost-moz.json",
-          "$RESOURCE/pytubepp-helper-msghost",
-          "$RESOURCE/pytubepp-helper-autostart.plist"
-        ]
-      },
-      "path": {
-        "all": true
-      },
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true
-      },
-      "process": {
-        "all": false,
-        "exit": true,
-        "relaunch": true
-      }
-    },
+  "identifier": "com.neosubhamoy.pytubepp.helper",
+  "plugins": {},
+  "app": {
     "windows": [
       {
         "title": "PytubePP Helper",
         "width": 515,
-        "height": 365
+        "height": 365,
+        "useHttpsScheme": true
       }
     ],
     "security": {
-      "csp": null
-    },
-    "bundle": {
-      "active": true,
-      "targets": ["app", "dmg"],
-      "identifier": "com.neosubhamoy.pytubepp.helper",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "macOS": {
-        "minimumSystemVersion": "10.13",
-        "license": "../LICENSE",
-        "providerShortName": "neosubhamoy"
-      },
-      "resources": [
-        "pytubepp-helper-msghost.json",
-        "pytubepp-helper-msghost-moz.json",
-        "pytubepp-helper-msghost",
-        "pytubepp-helper-autostart.plist"
+      "csp": null,
+      "capabilities": [
+        "main-capability",
+        "shell-scope",
+        {
+          "identifier": "fs-scope",
+          "description": "allowed file system scopes",
+          "permissions": [
+            {
+              "identifier": "fs:scope",
+              "allow": [
+                { "path": "$HOME/Library/LaunchAgents/" },
+                { "path": "$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts/" },
+                { "path": "$HOME/Library/Application Support/Chromium/NativeMessagingHosts/" },
+                { "path": "$HOME/Library/Application Support/Mozilla/NativeMessagingHosts/" },
+                { "path": "$HOME/Library/LaunchAgents/*" },
+                { "path": "$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts/*" },
+                { "path": "$HOME/Library/Application Support/Chromium/NativeMessagingHosts/*" },
+                { "path": "$HOME/Library/Application Support/Mozilla/NativeMessagingHosts/*" },
+                { "path": "$RESOURCE/pytubepp-helper-msghost.json" },
+                { "path": "$RESOURCE/pytubepp-helper-msghost-moz.json" },
+                { "path": "$RESOURCE/pytubepp-helper-msghost" },
+                { "path": "$RESOURCE/pytubepp-helper-autostart.plist" }
+              ]
+            }
+          ]
+        }
       ]
-    },
-    "systemTray": {
-      "iconPath": "icons/32x32.png",
-      "iconAsTemplate": true
     }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app", "dmg"],
+    "licenseFile": "../LICENSE",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "10.13",
+      "providerShortName": "neosubhamoy"
+    },
+    "resources": [
+      "pytubepp-helper-msghost.json",
+      "pytubepp-helper-msghost-moz.json",
+      "pytubepp-helper-msghost",
+      "pytubepp-helper-autostart.plist"
+    ]
   }
 }

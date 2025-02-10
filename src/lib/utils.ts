@@ -1,9 +1,9 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { Command } from '@tauri-apps/api/shell';
-import { invoke } from "@tauri-apps/api";
-import { fs } from '@tauri-apps/api';
-import { join, resourceDir, homeDir } from '@tauri-apps/api/path';
+import { Command } from "@tauri-apps/plugin-shell";
+import { invoke } from "@tauri-apps/api/core";
+import { join, resourceDir, homeDir } from "@tauri-apps/api/path";
+import * as fs from "@tauri-apps/plugin-fs"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export async function isInstalled(program: string, arg: string): Promise<{ installed: boolean, output: string | null }> {
   try{
-    const output = await new Command('is-' + program + '-installed', [arg]).execute();
+    const output = await Command.create('is-' + program + '-installed', [arg]).execute();
     if (output.code === 0) {
       return { installed: true, output: output.stdout };
     } else {
@@ -25,7 +25,7 @@ export async function isInstalled(program: string, arg: string): Promise<{ insta
 
 export async function detectWindows(): Promise<string | null> {
   try{
-    const output = await new Command('detect-windows', []).execute();
+    const output = await Command.create('detect-windows', []).execute();
     if (output.code === 0) {
       return output.stdout;
     } else {
@@ -39,7 +39,7 @@ export async function detectWindows(): Promise<string | null> {
 
 export async function detectMacOs(): Promise<string | null> {
   try{
-    const output = await new Command('detect-macos', []).execute();
+    const output = await Command.create('detect-macos', []).execute();
     if (output.code === 0) {
       return output.stdout;
     } else {
@@ -53,7 +53,7 @@ export async function detectMacOs(): Promise<string | null> {
 
 export async function detectDistro(): Promise<string | null> {
   try{
-    const output = await new Command('detect-distro', ['^ID=', '/etc/os-release']).execute();
+    const output = await Command.create('detect-distro', ['^ID=', '/etc/os-release']).execute();
     if (output.code === 0) {
       return output.stdout;
     } else {
@@ -67,7 +67,7 @@ export async function detectDistro(): Promise<string | null> {
 
 export async function detectPackageManager(): Promise<string | null> {
   try{
-    const output = await new Command('detect-pkgmngr', ['-c', 'command -v apt || command -v dnf || command -v pacman']).execute();
+    const output = await Command.create('detect-pkgmngr', ['-c', 'command -v apt || command -v dnf || command -v pacman']).execute();
     if (output.code === 0) {
       return output.stdout;
     } else {
@@ -118,7 +118,7 @@ export function extractVersion(output: string): string | null {
 export async function sendStreamInfo(url: string) {
   const fetchData = async () => {
     try {
-      const output = await new Command('fetch-video-info', [url, '--raw-info']).execute();
+      const output = await Command.create('fetch-video-info', [url, '--raw-info']).execute();
       if (output.code === 0) {
         console.log(output.stdout);
         const sendStreamData = async () => {
@@ -174,7 +174,7 @@ export async function registerMacFiles() {
         await fs.copyFile(sourcePath, destinationPath);
         console.log(`File ${file.source} copied successfully to ${destinationPath}`);
       } else {
-        await fs.createDir(destinationDir, { recursive: true })
+        await fs.mkdir(destinationDir, { recursive: true })
         console.log(`Created dir ${destinationDir}`);
         await fs.copyFile(sourcePath, destinationPath);
         console.log(`File ${file.source} copied successfully to ${destinationPath}`);

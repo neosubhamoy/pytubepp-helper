@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { z } from "zod";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Globe, History, Save } from "lucide-react";

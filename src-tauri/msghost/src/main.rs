@@ -1,18 +1,21 @@
 mod config;
 use config::load_config;
+use serde_json::Value;
 use std::io::{self, Read, Write};
-use websocket::client::ClientBuilder;
-use websocket::OwnedMessage;
 use std::thread::sleep;
 use std::time::Duration;
-use serde_json::Value;
+use websocket::client::ClientBuilder;
+use websocket::OwnedMessage;
 
 fn get_websocket_url() -> String {
     let config = load_config();
     format!("ws://localhost:{}", config.port)
 }
 
-fn connect_with_retry(url: &str, max_attempts: u32) -> Result<websocket::sync::Client<std::net::TcpStream>, Box<dyn std::error::Error>> {
+fn connect_with_retry(
+    url: &str,
+    max_attempts: u32,
+) -> Result<websocket::sync::Client<std::net::TcpStream>, Box<dyn std::error::Error>> {
     let mut attempts = 0;
     loop {
         match ClientBuilder::new(url).unwrap().connect_insecure() {
@@ -26,7 +29,10 @@ fn connect_with_retry(url: &str, max_attempts: u32) -> Result<websocket::sync::C
                     return Err(Box::new(e));
                 }
                 let wait_time = Duration::from_secs(2u64.pow(attempts));
-                eprintln!("Connection attempt {} failed. Retrying in {:?}...", attempts, wait_time);
+                eprintln!(
+                    "Connection attempt {} failed. Retrying in {:?}...",
+                    attempts, wait_time
+                );
                 sleep(wait_time);
             }
         }
@@ -57,12 +63,12 @@ fn write_stdout_message(message: &str) -> Result<(), Box<dyn std::error::Error>>
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("Waiting for message from extension...");
-    
+
     let input = match read_stdin_message() {
         Ok(msg) => {
             eprintln!("Received message: {}", msg);
             msg
-        },
+        }
         Err(e) => {
             eprintln!("Error reading message: {:?}", e);
             return Err(e);
@@ -70,10 +76,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     // Send immediate response to the extension
-    write_stdout_message(&serde_json::json!({
-        "status": "received",
-        "message": "Message received by native host"
-    }).to_string())?;
+    write_stdout_message(
+        &serde_json::json!({
+            "status": "received",
+            "message": "Message received by native host"
+        })
+        .to_string(),
+    )?;
 
     let parsed: Value = serde_json::from_str(&input)?;
 
@@ -84,10 +93,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Ok(client) => client,
         Err(e) => {
             eprintln!("Failed to connect after multiple attempts: {:?}", e);
-            write_stdout_message(&serde_json::json!({
-                "status": "error",
-                "message": "Failed to connect to Tauri app"
-            }).to_string())?;
+            write_stdout_message(
+                &serde_json::json!({
+                    "status": "error",
+                    "message": "Failed to connect to Tauri app"
+                })
+                .to_string(),
+            )?;
             return Err(e);
         }
     };
@@ -97,13 +109,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Receive response from Tauri app
     let message = client.recv_message()?;
-    
+
     // Send Tauri app's response back to browser extension
     if let OwnedMessage::Text(text) = message {
-        write_stdout_message(&serde_json::json!({
-            "status": "success",
-            "response": text
-        }).to_string())?;
+        write_stdout_message(
+            &serde_json::json!({
+                "status": "success",
+                "response": text
+            })
+            .to_string(),
+        )?;
     }
 
     Ok(())

@@ -1,8 +1,8 @@
 import React from "react"
 import { useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { appWindow } from '@tauri-apps/api/window';
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { ThemeProvider } from "@/components/theme-provider";
 import { WebSocketMessage } from "@/types";
 import { sendStreamInfo } from "@/lib/utils";
@@ -10,6 +10,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 function App({ children }: { children: React.ReactNode }) {
+  const appWindow = getCurrentWebviewWindow()
+  
   useEffect(() => {
     const handleCloseRequested = (event: any) => {
       event.preventDefault();

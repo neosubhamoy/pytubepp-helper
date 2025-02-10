@@ -1,4 +1,4 @@
-import { platform } from "@tauri-apps/api/os";
+import { platform } from "@tauri-apps/plugin-os";
 import { detectDistro, detectMacOs, detectPackageManager, detectWindows, extractDistroId, extractPkgMngrName, extractVersion } from "@/lib/utils";
 import { PlatformInfo } from "@/types";
 
@@ -16,7 +16,7 @@ export async function getPlatformInfo(): Promise<PlatformInfo> {
         const currentPlatform = await platform();
 
         switch (currentPlatform) {
-            case 'win32': {
+            case 'windows': {
                 const windowsResult = await detectWindows();
                 if (windowsResult) {
                     return {
@@ -27,8 +27,7 @@ export async function getPlatformInfo(): Promise<PlatformInfo> {
                 }
                 break;
             }
-
-            case 'darwin': {
+            case 'macos': {
                 const macResult = await detectMacOs();
                 if (macResult) {
                     return {

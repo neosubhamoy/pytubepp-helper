@@ -1,6 +1,6 @@
+use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use directories::ProjectDirs;
 use std::path::PathBuf;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -10,9 +10,7 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
-        Self {
-            port: 3030,
-        }
+        Self { port: 3030 }
     }
 }
 
@@ -37,18 +35,17 @@ pub fn load_config() -> Config {
 }
 
 pub fn save_config(config: &Config) -> Result<(), String> {
-    let config_dir = get_config_dir()
-        .ok_or_else(|| "Could not determine config directory".to_string())?;
-    
+    let config_dir =
+        get_config_dir().ok_or_else(|| "Could not determine config directory".to_string())?;
+
     fs::create_dir_all(&config_dir)
         .map_err(|e| format!("Failed to create config directory: {}", e))?;
-    
+
     let config_path = config_dir.join("config.json");
     let content = serde_json::to_string_pretty(config)
         .map_err(|e| format!("Failed to serialize config: {}", e))?;
-    
-    fs::write(config_path, content)
-        .map_err(|e| format!("Failed to write config file: {}", e))?;
-    
+
+    fs::write(config_path, content).map_err(|e| format!("Failed to write config file: {}", e))?;
+
     Ok(())
 }
