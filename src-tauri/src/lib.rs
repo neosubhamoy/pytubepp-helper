@@ -8,15 +8,15 @@ use serde_json::Value;
 use std::{env, process::Command, sync::Arc, time::Duration};
 use tauri::{
     menu::{Menu, MenuItem},
-    tray::{TrayIconBuilder, TrayIconEvent, MouseButton, MouseButtonState},
-    Manager, Emitter
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
+    Emitter, Manager,
 };
 use tokio::{
     net::{TcpListener, TcpStream},
     sync::{oneshot, Mutex},
     time::sleep,
 };
-use tokio_tungstenite::{accept_async, connect_async};
+use tokio_tungstenite::accept_async;
 
 struct ResponseChannel {
     sender: Option<oneshot::Sender<String>>,
@@ -32,20 +32,6 @@ struct WebSocketState {
     response_channel: ResponseChannel,
     server_abort: Option<tokio::sync::oneshot::Sender<()>>,
     config: Config,
-}
-
-async fn is_another_instance_running(port: u16) -> bool {
-    match connect_async(format!("ws://127.0.0.1:{}", port)).await {
-        Ok(_) => true,
-        Err(_) => false,
-    }
-}
-
-async fn try_bind_ws_port(port: u16) -> Option<TcpListener> {
-    match TcpListener::bind(format!("127.0.0.1:{}", port)).await {
-        Ok(listener) => Some(listener),
-        Err(_) => None,
-    }
 }
 
 async fn start_websocket_server(app_handle: tauri::AppHandle, port: u16) -> Result<(), String> {
@@ -328,32 +314,17 @@ pub async fn run() {
         config,
     }));
 
-    // Check if another instance is running
-    if is_another_instance_running(port).await {
-        println!("Another instance is already running. Exiting...");
-        std::process::exit(0);
-    }
-
-    // Try to bind to the WebSocket port with a few retries
-    let mut port_available = false;
-    for _ in 0..3 {
-        if let Some(_) = try_bind_ws_port(port).await {
-            port_available = true;
-            break;
-        }
-        sleep(Duration::from_millis(100)).await;
-    }
-
-    // If we couldn't bind to the port after retries, assume another instance is running
-    if !port_available {
-        println!("Could not bind to WebSocket port. Another instance might be running. Exiting...");
-        std::process::exit(0);
-    }
-
     let args: Vec<String> = env::args().collect();
     let start_hidden = args.contains(&"--hidden".to_string());
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            // Focus the main window when attempting to launch another instance
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
+        }))
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_shell::init())
@@ -364,7 +335,7 @@ pub async fn run() {
                 .map_err(|e| format!("Failed to create quit menu item: {}", e))?;
             let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)
                 .map_err(|e| format!("Failed to create show menu item: {}", e))?;
-            
+
             // Create the menu
             let menu = Menu::with_items(app, &[&show, &quit])
                 .map_err(|e| format!("Failed to create menu: {}", e))?;
@@ -391,7 +362,8 @@ pub async fn run() {
                         button: MouseButton::Left,
                         button_state: MouseButtonState::Up,
                         ..
-                    } = event {
+                    } = event
+                    {
                         let app = tray.app_handle();
                         if let Some(window) = app.get_webview_window("main") {
                             let _ = window.show();
