@@ -37,7 +37,7 @@
     ],
     "linux": {
       "deb": {
-        "depends": ["python3-pip", "ffmpeg", "gnome-terminal"],
+        "depends": ["python3-pip", "nodejs", "ffmpeg", "gnome-terminal"],
         "files": {
           "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
           "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
@@ -49,7 +49,7 @@
       "rpm": {
         "epoch": 0,
         "release": "1",
-        "depends": ["python3-pip", "ffmpeg", "gnome-terminal"],
+        "depends": ["python3-pip", "nodejs", "ffmpeg", "gnome-terminal"],
         "files": {
           "/etc/opt/chrome/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
           "/etc/chromium/native-messaging-hosts/com.neosubhamoy.pytubepp.helper.json": "./msghost-manifest/linux/chrome/com.neosubhamoy.pytubepp.helper.json",
