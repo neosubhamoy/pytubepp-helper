@@ -26,7 +26,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEMwNjIwMjQ1OTk4NjJDRUMKUldUc0xJYVpSUUppd0Y5NGhyTUg0VDhDNFd3SFMzNnBYUlhZSlE1WGNjamcxS0tOMDE5M1dycWYK",
       "endpoints": [
-        "https://releases.neosubhamoy.com/tauri-update/pytubepp-helper/{{target}}/{{arch}}/{{current_version}}"
+        "https://github.com/neosubhamoy/pytubepp-helper/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"

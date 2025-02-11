@@ -51,11 +51,11 @@
     ],
     "windows": {
       "wix": {
-        "fragmentPaths": ["installer/windows/wix-fragment-registry.wxs"],
+        "fragmentPaths": ["installer/windows/wix-fragment.wxs"],
         "componentRefs": ["PytubeppHelperFragmentRegistryEntries"]
       },
       "nsis": {
-        "template": "installer/windows/nsis-template.nsi"
+        "installerHooks": "installer/windows/nsis-hooks.nsi"
       }
     },
     "resources": [
