@@ -9,6 +9,7 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -21,7 +22,17 @@
   "mainBinaryName": "pytubepp-helper",
   "version": "0.6.0",
   "identifier": "com.neosubhamoy.pytubepp.helper",
-  "plugins": {},
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEMwNjIwMjQ1OTk4NjJDRUMKUldUc0xJYVpSUUppd0Y5NGhyTUg0VDhDNFd3SFMzNnBYUlhZSlE1WGNjamcxS0tOMDE5M1dycWYK",
+      "endpoints": [
+        "https://releases.neosubhamoy.com/tauri-update/pytubepp-helper/{{target}}/{{arch}}/{{current_version}}"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
   "app": {
     "security": {
       "csp": null

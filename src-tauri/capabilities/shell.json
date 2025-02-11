@@ -1,98 +1,133 @@
 {
-    "$schema": "../gen/schemas/desktop-schema.json",
-    "identifier": "shell-scope",
-    "description": "allowed shell scopes",
-    "windows": ["main"],
-    "permissions": [
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "shell-scope",
+  "description": "allowed shell scopes",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
         {
-            "identifier": "shell:allow-execute",
-            "allow": [
+          "name": "detect-windows",
+          "cmd": "systeminfo",
+          "args": []
+        },
+        {
+          "name": "detect-macos",
+          "cmd": "sw_vers",
+          "args": []
+        },
+        {
+          "name": "detect-distro",
+          "cmd": "grep",
+          "args": [
+            "^ID=",
+            "/etc/os-release"
+          ]
+        },
+        {
+          "name": "detect-pkgmngr",
+          "cmd": "sh",
+          "args": [
+            "-c",
+            "command -v apt || command -v dnf || command -v pacman"
+          ]
+        },
+        {
+          "name": "is-apt-installed",
+          "cmd": "apt",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-dnf-installed",
+          "cmd": "dnf",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-python3-installed",
+          "cmd": "python3",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-pip3-installed",
+          "cmd": "pip3",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-winget-installed",
+          "cmd": "winget",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-homebrew-installed",
+          "cmd": "brew",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-python-installed",
+          "cmd": "python",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-pip-installed",
+          "cmd": "pip",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-ffmpeg-installed",
+          "cmd": "ffmpeg",
+          "args": [
+            "-version"
+          ]
+        },
+        {
+          "name": "is-nodejs-installed",
+          "cmd": "node",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "is-pytubepp-installed",
+          "cmd": "pytubepp",
+          "args": [
+            "--version"
+          ]
+        },
+        {
+          "name": "fetch-video-info",
+          "cmd": "pytubepp",
+          "args": [
             {
-                "name": "detect-windows",
-                "cmd": "systeminfo",
-                "args": []
+              "validator": "\\S+"
             },
-            {
-                "name": "detect-macos", 
-                "cmd": "sw_vers",
-                "args": []
-            },
-            {
-                "name": "detect-distro",
-                "cmd": "grep",
-                "args": ["^ID=", "/etc/os-release"]
-            },
-            {
-                "name": "detect-pkgmngr",
-                "cmd": "sh",
-                "args": ["-c", "command -v apt || command -v dnf || command -v pacman"]
-            },
-            {
-                "name": "is-apt-installed",
-                "cmd": "apt",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-dnf-installed",
-                "cmd": "dnf",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-python3-installed",
-                "cmd": "python3",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-pip3-installed",
-                "cmd": "pip3",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-winget-installed",
-                "cmd": "winget",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-homebrew-installed",
-                "cmd": "brew",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-python-installed",
-                "cmd": "python",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-pip-installed",
-                "cmd": "pip",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-ffmpeg-installed",
-                "cmd": "ffmpeg",
-                "args": ["-version"]
-            },
-            {
-                "name": "is-nodejs-installed",
-                "cmd": "node",
-                "args": ["--version"]
-            },
-            {
-                "name": "is-pytubepp-installed",
-                "cmd": "pytubepp",
-                "args": ["--version"]
-            },
-            {
-                "name": "fetch-video-info",
-                "cmd": "pytubepp",
-                "args": [{ "validator": "\\S+" }, "--raw-info"]
-            }
-            ]
+            "--raw-info"
+          ]
         }
-    ],
-    "platforms": [
-        "windows",
-        "macOS",
-        "linux"
-    ]
+      ]
+    }
+  ],
+  "platforms": [
+    "windows",
+    "macOS",
+    "linux"
+  ]
 }

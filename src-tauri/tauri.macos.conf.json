@@ -6,7 +6,6 @@
     "frontendDist": "../dist"
   },
   "identifier": "com.neosubhamoy.pytubepp.helper",
-  "plugins": {},
   "app": {
     "windows": [
       {
@@ -50,6 +49,7 @@
   "bundle": {
     "active": true,
     "targets": ["app", "dmg"],
+    "createUpdaterArtifacts": true,
     "licenseFile": "../LICENSE",
     "icon": [
       "icons/32x32.png",

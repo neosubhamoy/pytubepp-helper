@@ -11,6 +11,7 @@
     "shell:default",
     "os:default",
     "fs:default",
+    "updater:default",
     "core:window:allow-hide",
     "fs:allow-app-write",
     "fs:allow-app-write-recursive"

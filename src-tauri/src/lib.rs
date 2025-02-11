@@ -318,6 +318,7 @@ pub async fn run() {
     let start_hidden = args.contains(&"--hidden".to_string());
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             // Focus the main window when attempting to launch another instance
             if let Some(window) = app.get_webview_window("main") {
