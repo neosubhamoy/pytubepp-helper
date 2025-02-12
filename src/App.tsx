@@ -1,5 +1,5 @@
 import React from "react"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
@@ -8,9 +8,19 @@ import { WebSocketMessage } from "@/types";
 import { sendStreamInfo } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { check as checkAppUpdate } from "@tauri-apps/plugin-updater";
+import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 
 function App({ children }: { children: React.ReactNode }) {
   const appWindow = getCurrentWebviewWindow()
+  const [isAppUpdateChecked, setIsAppUpdateChecked] = useState(false);
+
+  // Prevent context menu in production
+  if (!import.meta.env.DEV) {
+    document.oncontextmenu = (event) => {
+        event.preventDefault()
+    }
+  }
   
   useEffect(() => {
     const handleCloseRequested = (event: any) => {
@@ -48,6 +58,32 @@ function App({ children }: { children: React.ReactNode }) {
       unlisten.then(f => f());
     };
   }, []);
+
+  useEffect(() => {
+    const checkForUpdates = async () => {
+        let permissionGranted = await isPermissionGranted();
+        if (!permissionGranted) {
+          const permission = await requestPermission();
+          permissionGranted = permission === 'granted';
+        }
+        setIsAppUpdateChecked(true);
+        try {
+          const update = await checkAppUpdate();
+          if (update) {
+              console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
+              if (permissionGranted) {
+                sendNotification({ title: 'Update Available', body: 'A new version of pytubepp-helper is available. Please update to the latest version.' });
+              }
+          }
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
+    if (!isAppUpdateChecked) {
+      checkForUpdates();
+    }
+  }, [])
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

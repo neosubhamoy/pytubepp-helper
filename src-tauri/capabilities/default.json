@@ -11,6 +11,8 @@
     "shell:default",
     "os:default",
     "fs:default",
+    "process:default",
+    "notification:default",
     "updater:default",
     "core:window:allow-hide",
     "fs:allow-app-write",
