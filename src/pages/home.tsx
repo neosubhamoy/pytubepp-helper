@@ -266,7 +266,7 @@ export default function HomePage() {
                 </div>
                 <div className="programitem flex items-center justify-between">
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
-                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
+                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
                 {(!installedPrograms.apt.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
                     <Alert className="mt-5" variant="destructive">
@@ -312,7 +312,7 @@ export default function HomePage() {
                 </div>
                 <div className="programitem flex items-center justify-between">
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
-                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp'})}}>install</Button> : null}
+                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
                 {(!installedPrograms.dnf.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
                     <Alert className="mt-5" variant="destructive">
@@ -395,7 +395,7 @@ export default function HomePage() {
                 </div>
                 <div className="programitem flex items-center justify-between">
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
-                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
+                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
                 {(!installedPrograms.brew.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
                     <Alert className="mt-5" variant="destructive">
