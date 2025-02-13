@@ -15,7 +15,7 @@ function App({ children }: { children: React.ReactNode }) {
   const appWindow = getCurrentWebviewWindow()
   const [isAppUpdateChecked, setIsAppUpdateChecked] = useState(false);
 
-  // Prevent context menu in production
+  // Prevent right click context menu in production
   if (!import.meta.env.DEV) {
     document.oncontextmenu = (event) => {
         event.preventDefault()
@@ -66,14 +66,14 @@ function App({ children }: { children: React.ReactNode }) {
           const permission = await requestPermission();
           permissionGranted = permission === 'granted';
         }
-        setIsAppUpdateChecked(true);
         try {
+          setIsAppUpdateChecked(true);
           const update = await checkAppUpdate();
           if (update) {
-              console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
-              if (permissionGranted) {
-                sendNotification({ title: 'Update Available', body: 'A new version of pytubepp-helper is available. Please update to the latest version.' });
-              }
+            console.log(`app update available v${update.version}`);
+            if (permissionGranted) {
+              sendNotification({ title: `Update Available (v${update.version})`, body: `A newer version of PytubePP Helper is available. Please update to the latest version to get the best experience!` });
+            }
           }
         } catch (error) {
           console.error(error);

@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { InstalledPrograms } from "@/types";
 import { compareVersions, extractVersion, isInstalled, registerMacFiles } from "@/lib/utils";
-import { CircleCheck, TriangleAlert, CircleAlert, Settings, RefreshCcw, Loader2, PackagePlus } from "lucide-react";
+import { CircleCheck, TriangleAlert, CircleAlert, Settings, RefreshCcw, Loader2, PackagePlus, Bell } from "lucide-react";
 import { getPlatformInfo } from "@/lib/platform-utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { NotificationBadge } from "@/components/ui/notification-badge";
+import { check as checkAppUpdate } from "@tauri-apps/plugin-updater";
 
 export default function HomePage() {
     const { toast } = useToast();
@@ -20,6 +22,7 @@ export default function HomePage() {
     const [macOsVersion, setMacOsVersion] = useState<string | null>(null)
     const [distroId, setDistroId] = useState<string | null>(null)
     const [distroPkgMngr, setDistroPkgMngr] = useState<string | null>(null)
+    const [isAppUpdateAvailable, setIsAppUpdateAvailable] = useState(false);
     const [installedPrograms, setInstalledPrograms] = useState<InstalledPrograms>({
         winget: {
             installed: false,
@@ -199,6 +202,18 @@ export default function HomePage() {
         init();
     }, []);
 
+    useEffect(() => {
+        const checkForUpdates = async () => {
+            try {
+                const update = await checkAppUpdate();
+                setIsAppUpdateAvailable(update ? true : false);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        checkForUpdates();
+    }, []);
+
     return (
         <div className="container">
             <div className={clsx("topbar flex justify-between items-center mt-5", !isWindows && "mx-3")}>
@@ -206,7 +221,23 @@ export default function HomePage() {
                 <div className="flex items-center">
                     <Tooltip>
                         <TooltipTrigger>
-                            <Button variant="outline" size="icon" asChild>
+                            <NotificationBadge
+                                label='1'
+                                className='bg-green-700 text-white hover:bg-green-700 hover:cursor-default'
+                                show={isAppUpdateAvailable}
+                            >
+                                <Button variant="outline" size="icon" asChild>
+                                    <Link to="/notifications">
+                                        <Bell className="w-5 h-5"/>
+                                    </Link>
+                                </Button>
+                            </NotificationBadge>
+                        </TooltipTrigger>
+                        <TooltipContent>notifications</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button className="ml-3" variant="outline" size="icon" asChild>
                                 <Link to="/settings">
                                     <Settings className="w-5 h-5"/>
                                 </Link>
