@@ -1,6 +1,6 @@
 [package]
 name = "pytubepp-helper"
-version = "0.6.0"
+version = "0.7.0"
 description = "PytubePP Helper"
 authors = ["neosubhamoy"]
 edition = "2021"
