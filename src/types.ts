@@ -24,6 +24,10 @@ export interface InstalledPrograms {
         installed: boolean;
         version: string | null;
     };
+    pacman: {
+        installed: boolean;
+        version: string | null;
+    };
     brew: {
         installed: boolean;
         version: string | null;

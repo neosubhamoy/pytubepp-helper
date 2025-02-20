@@ -50,6 +50,13 @@
           ]
         },
         {
+          "name": "is-pacman-installed",
+          "cmd": "pacman",
+          "args": [
+            "--version"
+          ]
+        },
+        {
           "name": "is-python3-installed",
           "cmd": "python3",
           "args": [

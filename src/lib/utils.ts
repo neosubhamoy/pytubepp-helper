@@ -103,6 +103,7 @@ export function extractVersion(output: string): string | null {
       /OS Version:.*Build (\d+)/,               // Pattern for Windows build
       /apt (\d+\.\d+\.\d+)/,                    // Pattern for apt
       /(\d+\.\d+\.\d+)/,                        // Pattern for dnf
+      /Pacman v(\d+\.\d+\.\d+)/,                // Pattern for pacman
       /ProductVersion:\s+(\d+\.\d+(\.\d+)?)/,   // Pattern for macOS version
       /Homebrew (\d+\.\d+\.\d+)/,               // Pattern for Homebrew
   ];

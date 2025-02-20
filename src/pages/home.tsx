@@ -36,6 +36,10 @@ export default function HomePage() {
             installed: false,
             version: null,
         },
+        pacman: {
+            installed: false,
+            version: null,
+        },
         brew: {
             installed: false,
             version: null,
@@ -94,6 +98,15 @@ export default function HomePage() {
                 setInstalledPrograms((prevState) => ({
                 ...prevState,
                 dnf: {
+                    installed: result.installed,
+                    version: result.output ? extractVersion(result.output) : null,
+                }
+                }));
+            }),
+            isInstalled('pacman', '--version').then((result) => {
+                setInstalledPrograms((prevState) => ({
+                ...prevState,
+                pacman: {
                     installed: result.installed,
                     version: result.output ? extractVersion(result.output) : null,
                 }
@@ -299,7 +312,7 @@ export default function HomePage() {
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
                     {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
-                {(!installedPrograms.apt.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
+                {(!installedPrograms.apt.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed || !installedPrograms.nodejs.installed)) ?
                     <Alert className="mt-5" variant="destructive">
                     <CircleAlert className="h-5 w-5" />
                     <AlertTitle>APT Not Found</AlertTitle>
@@ -317,7 +330,7 @@ export default function HomePage() {
                     </AlertDescription>
                     </Alert>
                 : null}
-                {(installedPrograms.python3.installed && installedPrograms.ffmpeg.installed && installedPrograms.pytubepp.installed) ?
+                {(installedPrograms.python3.installed && installedPrograms.ffmpeg.installed && installedPrograms.nodejs.installed && installedPrograms.pytubepp.installed) ?
                     <Alert className="mt-5">
                     <CircleCheck className="h-5 w-5" />
                     <AlertTitle>Ready</AlertTitle>
@@ -345,7 +358,7 @@ export default function HomePage() {
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
                     {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
-                {(!installedPrograms.dnf.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
+                {(!installedPrograms.dnf.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed || !installedPrograms.nodejs.installed)) ?
                     <Alert className="mt-5" variant="destructive">
                     <CircleAlert className="h-5 w-5" />
                     <AlertTitle>DNF Not Found</AlertTitle>
@@ -363,7 +376,53 @@ export default function HomePage() {
                     </AlertDescription>
                     </Alert>
                 : null}
-                {(installedPrograms.python3.installed && installedPrograms.ffmpeg.installed && installedPrograms.pytubepp.installed) ?
+                {(installedPrograms.python3.installed && installedPrograms.ffmpeg.installed && installedPrograms.nodejs.installed && installedPrograms.pytubepp.installed) ?
+                    <Alert className="mt-5">
+                    <CircleCheck className="h-5 w-5" />
+                    <AlertTitle>Ready</AlertTitle>
+                    <AlertDescription>
+                        Everything looks ok! You can close this window now. Make sure it's always running in the background.
+                    </AlertDescription>
+                    </Alert>
+                : null}
+            </div>
+            : distroId && distroPkgMngr && distroPkgMngr === 'pacman' ? /* Section for Arch Linux */
+            <div className="programstats mt-5 mx-3">
+                <div className="programitem flex items-center justify-between">
+                    <p><b>Python:</b> {installedPrograms.python3.installed ? 'installed' : 'not installed'} {installedPrograms.python3.version ? `(${installedPrograms.python3.version})` : ''}</p>
+                    {installedPrograms.python3.installed ? installedPrograms.python3.version ? compareVersions(installedPrograms.python3.version, '3.8') < 0 ? <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pacman.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo pacman -Sy python'})}}>install</Button> : <TriangleAlert className="w-5 h-5 my-2 text-orange-400"/> : null}
+                </div>
+                <div className="programitem flex items-center justify-between">
+                    <p><b>FFmpeg:</b> {installedPrograms.ffmpeg.installed ? 'installed' : 'not installed'} {installedPrograms.ffmpeg.version ? `(${installedPrograms.ffmpeg.version})` : ''}</p>
+                    {installedPrograms.ffmpeg.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pacman.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo pacman -Sy ffmpeg'})}}>install</Button> : null}
+                </div>
+                <div className="programitem flex items-center justify-between">
+                    <p><b>Node.js:</b> {installedPrograms.nodejs.installed ? 'installed' : 'not installed'} {installedPrograms.nodejs.version ? `(${installedPrograms.nodejs.version})` : ''}</p>
+                    {installedPrograms.nodejs.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pacman.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo pacman -Sy nodejs-lts-iron npm'})}}>install</Button> : null}
+                </div>
+                <div className="programitem flex items-center justify-between">
+                    <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
+                    {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
+                </div>
+                {(!installedPrograms.pacman.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed || !installedPrograms.nodejs.installed)) ?
+                    <Alert className="mt-5" variant="destructive">
+                    <CircleAlert className="h-5 w-5" />
+                    <AlertTitle>Pacman Not Found</AlertTitle>
+                    <AlertDescription>
+                        Pacman is required to install necessary packages. Please install it manually for your distro.
+                    </AlertDescription>
+                    </Alert>
+                : null}
+                {(!installedPrograms.pip3.installed && !installedPrograms.pytubepp.installed) ?
+                    <Alert className="mt-5" variant="destructive">
+                    <CircleAlert className="h-5 w-5" />
+                    <AlertTitle>PIP Not Found</AlertTitle>
+                    <AlertDescription>
+                        PIP is required to install necessary python packages. Please install it now to continue: <Button variant="link" className="text-blue-600 p-0" onClick={async () => { await invoke('install_program', {icommand: 'sudo pacman -Sy python-pip'})}}>install</Button>
+                    </AlertDescription>
+                    </Alert>
+                : null}
+                {(installedPrograms.python3.installed && installedPrograms.ffmpeg.installed && installedPrograms.nodejs.installed && installedPrograms.pytubepp.installed) ?
                     <Alert className="mt-5">
                     <CircleCheck className="h-5 w-5" />
                     <AlertTitle>Ready</AlertTitle>
@@ -391,7 +450,7 @@ export default function HomePage() {
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
                     {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip install pytubepp'})}}>install</Button> : null}
                 </div>
-                {(!installedPrograms.winget.installed && (!installedPrograms.python.installed || !installedPrograms.ffmpeg.installed)) ?
+                {(!installedPrograms.winget.installed && (!installedPrograms.python.installed || !installedPrograms.ffmpeg.installed || !installedPrograms.nodejs.installed)) ?
                     <Alert className="mt-5" variant="destructive">
                     <CircleAlert className="h-5 w-5" />
                     <AlertTitle>WinGet Not Found</AlertTitle>
@@ -400,7 +459,7 @@ export default function HomePage() {
                     </AlertDescription>
                     </Alert>
                 : null}
-                {(installedPrograms.python.installed && installedPrograms.ffmpeg.installed && installedPrograms.pytubepp.installed) ?
+                {(installedPrograms.python.installed && installedPrograms.ffmpeg.installed && installedPrograms.nodejs.installed && installedPrograms.pytubepp.installed) ?
                     <Alert className="mt-5">
                     <CircleCheck className="h-5 w-5" />
                     <AlertTitle>Ready</AlertTitle>
@@ -428,7 +487,7 @@ export default function HomePage() {
                     <p><b>PytubePP:</b> {installedPrograms.pytubepp.installed ? 'installed' : 'not installed'} {installedPrograms.pytubepp.version ? `(${installedPrograms.pytubepp.version})` : ''}</p>
                     {installedPrograms.pytubepp.installed ? <CircleCheck className="w-5 h-5 my-2 text-green-400"/> : installedPrograms.pip3.installed ? <Button variant="link" className="text-blue-600 px-0" onClick={async () => { await invoke('install_program', {icommand: 'pip3 install pytubepp || pip3 install pytubepp --break-system-packages'})}}>install</Button> : null}
                 </div>
-                {(!installedPrograms.brew.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed)) ?
+                {(!installedPrograms.brew.installed && (!installedPrograms.python3.installed || !installedPrograms.ffmpeg.installed || !installedPrograms.nodejs.installed)) ?
                     <Alert className="mt-5" variant="destructive">
                     <CircleAlert className="h-5 w-5" />
                     <AlertTitle>Homebrew Not Found</AlertTitle>
