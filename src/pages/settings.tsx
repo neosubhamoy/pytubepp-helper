@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Config, PlatformInfo } from "@/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { getPlatformInfo } from "@/lib/platform-utils";
@@ -25,7 +25,6 @@ const settingsFormSchema = z.object({
 })
 
 export default function SettingsPage() {
-    const { toast } = useToast();
     const { setTheme } = useTheme();
     const [platformInfo, setPlatformInfo] = useState<PlatformInfo | null>(null);
     const [appConfig, setAppConfig] = useState<Config | null>(null);
@@ -87,15 +86,10 @@ export default function SettingsPage() {
             });
             setAppConfig(updatedConfig);
             setIsFormDirty(false);
-            toast({
-                title: "Settings updated"
-            });
+            toast("Settings updated");
         } catch (error) {
             console.error("Failed to update config:", error);
-            toast({
-                title: "Failed to update settings",
-                variant: "destructive"
-            });
+            toast("Failed to update settings");
         }
     }
 
@@ -105,15 +99,10 @@ export default function SettingsPage() {
             setAppConfig(config);
             settingsForm.reset({ port: config.port, theme: config.theme });
             setIsFormDirty(false);
-            toast({
-                title: "Using default settings"
-            });
+            toast("Settings reset to default");
         } catch (error) {
             console.error("Failed to reset config:", error);
-            toast({
-                title: "Failed to reset settings",
-                variant: "destructive"
-            });
+            toast("Failed to reset settings");
         }
     }
 

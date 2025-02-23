@@ -9,12 +9,11 @@ import { compareVersions, extractVersion, isInstalled, registerMacFiles } from "
 import { CircleCheck, TriangleAlert, CircleAlert, Settings, RefreshCcw, Loader2, PackagePlus, Bell } from "lucide-react";
 import { getPlatformInfo } from "@/lib/platform-utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner"
 import { NotificationBadge } from "@/components/ui/notification-badge";
 import { check as checkAppUpdate } from "@tauri-apps/plugin-updater";
 
 export default function HomePage() {
-    const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(true);
     const [isWindows, setIsWindows] = useState<boolean>(false)
     const [windowsVersion, setWindowsVersion] = useState<string | null>(null)
@@ -263,7 +262,7 @@ export default function HomePage() {
                         <TooltipTrigger>
                             <Button className="ml-3" size="icon" onClick={async () => {
                                 const result = await registerMacFiles();
-                                toast({ title: result.message, variant: result.success ? 'default' : 'destructive' });
+                                toast(result.message);
                             }}>
                                 <PackagePlus className="w-5 h-5"/>
                             </Button>
