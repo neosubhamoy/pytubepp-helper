@@ -6,11 +6,12 @@ use std::path::PathBuf;
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Config {
     pub port: u16,
+    pub theme: String,
 }
 
 impl Default for Config {
     fn default() -> Self {
-        Self { port: 3030 }
+        Self { port: 3030, theme: "system".to_string() }
     }
 }
 

@@ -4,7 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { ThemeProvider } from "@/components/theme-provider";
-import { WebSocketMessage } from "@/types";
+import { Config, WebSocketMessage } from "@/types";
 import { sendStreamInfo } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +13,7 @@ import { isPermissionGranted, requestPermission, sendNotification } from "@tauri
 
 function App({ children }: { children: React.ReactNode }) {
   const appWindow = getCurrentWebviewWindow()
+  const [appConfig, setAppConfig] = useState<Config | null>(null);
   const [isAppUpdateChecked, setIsAppUpdateChecked] = useState(false);
 
   // Prevent right click context menu in production
@@ -29,6 +30,16 @@ function App({ children }: { children: React.ReactNode }) {
     };
 
     appWindow.onCloseRequested(handleCloseRequested);
+  }, []);
+
+  useEffect(() => {
+    const getConfig = async () => {
+        const config: Config = await invoke("get_config");
+        if (config) {
+          setAppConfig(config);
+        }
+    }
+    getConfig().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -86,7 +97,7 @@ function App({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme={appConfig?.theme || "system"} storageKey="vite-ui-theme">
       <TooltipProvider delayDuration={1000}>
         {children}
         <Toaster />

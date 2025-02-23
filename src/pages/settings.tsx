@@ -14,14 +14,19 @@ import { useToast } from "@/hooks/use-toast";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { getPlatformInfo } from "@/lib/platform-utils";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTheme } from "@/components/theme-provider"
 
 const DEFAULT_PORT = 3030;
+const DEFAULT_THEME = "system";
 const settingsFormSchema = z.object({
     port: z.number().min(3000, { message: "Port must be greater than 3000" }).max(3999, { message: "Port must be less than 3999" }),
+    theme: z.enum(["system", "dark", "light"]),
 })
 
 export default function SettingsPage() {
     const { toast } = useToast();
+    const { setTheme } = useTheme();
     const [platformInfo, setPlatformInfo] = useState<PlatformInfo | null>(null);
     const [appConfig, setAppConfig] = useState<Config | null>(null);
     const [appVersion, setAppVersion] = useState<string | null>(null);
@@ -32,13 +37,14 @@ export default function SettingsPage() {
         resolver: zodResolver(settingsFormSchema),
         defaultValues: {
             port: DEFAULT_PORT,
+            theme: DEFAULT_THEME,
         },
     });
 
     useEffect(() => {
         const subscription = settingsForm.watch((value) => {
             if (appConfig) {
-                setIsFormDirty(value.port !== appConfig.port);
+                setIsFormDirty(value.port !== appConfig.port || value.theme !== appConfig.theme);
             }
         });
         return () => subscription.unsubscribe();
@@ -49,7 +55,7 @@ export default function SettingsPage() {
             const config: Config = await invoke("get_config");
             if (config) {
                 setAppConfig(config);
-                settingsForm.reset({ port: config.port });
+                settingsForm.reset({ port: config.port, theme: config.theme });
             }
         }
         getConfig().catch(console.error);
@@ -64,11 +70,19 @@ export default function SettingsPage() {
         getAppVersion().catch(console.error);
     }, [])
 
+    useEffect(() => {
+        const updateTheme = async () => {
+            setTheme(appConfig?.theme || DEFAULT_THEME);
+        }
+        updateTheme().catch(console.error);
+    }, [appConfig?.theme]);
+
     const updateConfig = async () => {
         try {
             const updatedConfig: Config = await invoke("update_config", { 
                 newConfig: { 
-                    port: Number(settingsForm.getValues().port) 
+                    port: Number(settingsForm.getValues().port),
+                    theme: settingsForm.getValues().theme
                 } 
             });
             setAppConfig(updatedConfig);
@@ -89,7 +103,7 @@ export default function SettingsPage() {
         try {
             const config: Config = await invoke("reset_config");
             setAppConfig(config);
-            settingsForm.reset({ port: config.port });
+            settingsForm.reset({ port: config.port, theme: config.theme });
             setIsFormDirty(false);
             toast({
                 title: "Using default settings"
@@ -103,7 +117,7 @@ export default function SettingsPage() {
         }
     }
 
-    const isUsingDefaultConfig = appConfig?.port === DEFAULT_PORT;
+    const isUsingDefaultConfig = appConfig?.port === DEFAULT_PORT && appConfig?.theme === DEFAULT_THEME;
 
     return (
         <div className="container">
@@ -149,17 +163,18 @@ export default function SettingsPage() {
                 </div>
             </div>
             <div className={clsx("mt-5", !platformInfo?.isWindows && "mx-3")}>
-                <div className="flex flex-col min-h-[55vh]">
+                <div className="flex flex-col min-h-[55vh] overflow-y-scroll">
                     <Form {...settingsForm}>
                         <form onSubmit={settingsForm.handleSubmit(updateConfig)}>
                             <FormField
                                 control={settingsForm.control}
                                 name="port"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="mb-2">
                                         <FormLabel>Port</FormLabel>
                                         <FormControl>
-                                            <Input 
+                                            <Input
+                                                className="focus-visible:ring-0"
                                                 type="text" 
                                                 {...field} 
                                                 onChange={(e) => {
@@ -174,8 +189,32 @@ export default function SettingsPage() {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            The port to use for the websocket server
+                                            The port to use for websocket communication with msghost
                                         </FormDescription>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={settingsForm.control}
+                                name="theme"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Theme</FormLabel>
+                                        <FormControl>
+                                            <Select {...field} onValueChange={(value) => field.onChange(value)}>
+                                                <SelectTrigger className="w-full ring-0 focus:ring-0">
+                                                    <SelectValue placeholder="Select App Theme" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectItem value="system">Follow System</SelectItem>
+                                                        <SelectItem value="light">Light</SelectItem>
+                                                        <SelectItem value="dark">Dark</SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
                                         <FormMessage/>
                                     </FormItem>
                                 )}

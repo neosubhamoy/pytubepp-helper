@@ -1,5 +1,6 @@
 export interface Config {
     port: number;
+    theme: "system" | "dark" | "light";
 }
 
 export interface PlatformInfo {
