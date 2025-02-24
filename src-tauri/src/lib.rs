@@ -34,6 +34,25 @@ struct WebSocketState {
     config: Config,
 }
 
+async fn is_port_available(port: u16) -> bool {
+    match TcpListener::bind(format!("127.0.0.1:{}", port)).await {
+        Ok(_) => true,
+        Err(_) => false,
+    }
+}
+
+async fn wait_for_port_availability(port: u16, max_attempts: u32) -> Result<(), String> {
+    let mut attempts = 0;
+    while attempts < max_attempts {
+        if is_port_available(port).await {
+            return Ok(());
+        }
+        sleep(Duration::from_millis(500)).await;
+        attempts += 1;
+    }
+    Err(format!("Port {} did not become available after {} attempts", port, max_attempts))
+}
+
 async fn start_websocket_server(app_handle: tauri::AppHandle, port: u16) -> Result<(), String> {
     let addr = format!("127.0.0.1:{}", port);
 
@@ -43,15 +62,22 @@ async fn start_websocket_server(app_handle: tauri::AppHandle, port: u16) -> Resu
         let mut state = state.lock().await;
         if let Some(old_abort) = state.server_abort.take() {
             let _ = old_abort.send(());
-            // Give it a moment to shut down
-            sleep(Duration::from_millis(200)).await;
+            // Wait for the port to become available
+            wait_for_port_availability(port, 6).await?; // Try for 3 seconds (6 attempts * 500ms)
         }
     }
 
     // Now try to bind to the port
-    let listener = TcpListener::bind(&addr)
-        .await
-        .map_err(|e| format!("Failed to bind to port {}: {}", port, e))?;
+    let listener = match TcpListener::bind(&addr).await {
+        Ok(l) => l,
+        Err(_e) => {
+            // One final attempt to wait and retry
+            sleep(Duration::from_secs(1)).await;
+            TcpListener::bind(&addr)
+                .await
+                .map_err(|e| format!("Failed to bind to port {}: {}", port, e))?
+        }
+    };
 
     let (abort_sender, mut abort_receiver) = tokio::sync::oneshot::channel();
 
