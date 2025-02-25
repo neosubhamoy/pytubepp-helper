@@ -212,7 +212,8 @@ export default function SettingsPage() {
                         </form>
                     </Form>
                 </div>
-                <div className="flex justify-between items-center border-t border-muted-foreground/50 pt-2">
+                <div className="flex justify-between items-center border-t border-muted-foreground/50 pt-2 relative">
+                    <div className="tintbar absolute -top-[0.10rem] left-0 -translate-y-full w-full h-5 bg-gradient-to-b from-transparent to-background"></div>
                     <div className="flex flex-col">
                         <p>PytubePP Helper <span className="text-muted-foreground">|</span> <span className="text-sm text-muted-foreground">v{appVersion}-beta</span></p>
                         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} - <a href="https://github.com/neosubhamoy/pytubepp-helper/blob/main/LICENSE" target="_blank">MIT License</a> - Made with ❤️ by <a href="https://neosubhamoy.com" target="_blank">Subhamoy</a></p>
