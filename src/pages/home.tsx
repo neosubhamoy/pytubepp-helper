@@ -6,12 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { InstalledPrograms } from "@/types";
 import { compareVersions, extractVersion, isInstalled, registerMacFiles } from "@/lib/utils";
-import { CircleCheck, TriangleAlert, CircleAlert, Settings, RefreshCcw, Loader2, PackagePlus, Bell } from "lucide-react";
+import { CircleCheck, TriangleAlert, CircleAlert, Settings, RefreshCcw, Loader2, PackagePlus, Bell, Puzzle } from "lucide-react";
 import { getPlatformInfo } from "@/lib/platform-utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner"
 import { NotificationBadge } from "@/components/ui/notification-badge";
 import { check as checkAppUpdate } from "@tauri-apps/plugin-updater";
+import { fetch } from '@tauri-apps/plugin-http';
+import { join, downloadDir } from "@tauri-apps/api/path";
+import * as fs from "@tauri-apps/plugin-fs"
 
 export default function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +25,7 @@ export default function HomePage() {
     const [distroId, setDistroId] = useState<string | null>(null)
     const [distroPkgMngr, setDistroPkgMngr] = useState<string | null>(null)
     const [isAppUpdateAvailable, setIsAppUpdateAvailable] = useState(false);
+    const [isExtensionUpdateAvailable, setIsExtensionUpdateAvailable] = useState(false);
     const [installedPrograms, setInstalledPrograms] = useState<InstalledPrograms>({
         winget: {
             installed: false,
@@ -226,6 +230,36 @@ export default function HomePage() {
         checkForUpdates();
     }, []);
 
+    useEffect(() => {
+        const checkForExtensionUpdates = async () => {
+            try {
+                const downloadDirPath = await downloadDir()
+                // const extensionDirPath = await join(downloadDirPath, "pytubepp-extension-chrome")
+                // const extensionDirExists = await fs.exists(extensionDirPath)
+                const extensionManifestPath = await join(downloadDirPath, "pytubepp-extension-chrome", "manifest.json")
+                const extensionManifestExists = await fs.exists(extensionManifestPath)
+                if (extensionManifestExists) {
+                    const currentManifest = JSON.parse(await fs.readTextFile(extensionManifestPath))
+                    const response = await fetch('https://github.com/neosubhamoy/pytubepp-extension/releases/latest/download/latest.json', {
+                        method: 'GET',
+                    });
+                    if (response.ok) {
+                        const data = await response.json()
+                        setIsExtensionUpdateAvailable(compareVersions(data.version, currentManifest.version) === 1)
+                    }
+                    else {
+                        console.error('Failed to fetch latest extension version');
+                    }
+                } else {
+                    console.log('Currently installed extension\'s manifest not found')
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        checkForExtensionUpdates();
+    }, []);
+
     return (
         <div className="container">
             <div className={clsx("topbar flex justify-between items-center mt-5", !isWindows && "mx-3")}>
@@ -236,9 +270,25 @@ export default function HomePage() {
                             <NotificationBadge
                                 label='1'
                                 className='bg-green-700 text-white hover:bg-green-700 hover:cursor-default'
-                                show={isAppUpdateAvailable}
+                                show={isExtensionUpdateAvailable}
                             >
                                 <Button variant="outline" size="icon" asChild>
+                                    <Link to="/extension-manager">
+                                        <Puzzle className="w-5 h-5"/>
+                                    </Link>
+                                </Button>
+                            </NotificationBadge>
+                        </TooltipTrigger>
+                        <TooltipContent>extension manager</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NotificationBadge
+                                label='1'
+                                className='bg-green-700 text-white hover:bg-green-700 hover:cursor-default'
+                                show={isAppUpdateAvailable}
+                            >
+                                <Button className="ml-3" variant="outline" size="icon" asChild>
                                     <Link to="/notifications">
                                         <Bell className="w-5 h-5"/>
                                     </Link>

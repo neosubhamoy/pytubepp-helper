@@ -11,7 +11,10 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
-        Self { port: 3030, theme: "system".to_string() }
+        Self {
+            port: 3030,
+            theme: "system".to_string(),
+        }
     }
 }
 

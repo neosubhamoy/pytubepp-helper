@@ -29,7 +29,11 @@
               "allow": [
                 { "path": "$RESOURCE/pytubepp-helper-msghost.json" },
                 { "path": "$RESOURCE/pytubepp-helper-msghost-moz.json" },
-                { "path": "$RESOURCE/pytubepp-helper-msghost.exe" }
+                { "path": "$RESOURCE/pytubepp-helper-msghost.exe" },
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome" },
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome/*" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper/*" }
               ]
             }
           ]
@@ -62,6 +66,9 @@
       "pytubepp-helper-msghost.json",
       "pytubepp-helper-msghost-moz.json",
       "pytubepp-helper-msghost.exe"
+    ],
+    "externalBin": [
+      "binaries/7zip"
     ]
   }
 }

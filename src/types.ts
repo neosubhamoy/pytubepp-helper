@@ -76,3 +76,20 @@ export interface Stream {
     fps: string;
     vcodec: string;
 }
+
+export interface LatestExtensionResponse {
+    version: string;
+    notes: string;
+    browsers: {
+        chrome: {
+            url: string;
+        },
+        firefox: {
+            url: string;
+        }
+    }
+}
+
+export interface CurrentExtension {
+    version: string;
+}

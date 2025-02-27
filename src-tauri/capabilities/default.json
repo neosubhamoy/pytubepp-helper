@@ -14,8 +14,15 @@
     "process:default",
     "notification:default",
     "updater:default",
+    "upload:default",
     "core:window:allow-hide",
     "fs:allow-app-write",
-    "fs:allow-app-write-recursive"
+    "fs:allow-app-write-recursive",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://github.com" }
+      ]
+    }
   ]
 }

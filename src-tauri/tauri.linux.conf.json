@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev && cargo build --manifest-path=./src-tauri/msghost/Cargo.toml",
-    "beforeBuildCommand": "npm run build && cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml",
+    "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && node makeFilesExecutable.js && npm run dev",
+    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && node makeFilesExecutable.js && npm run build",
     "devUrl": "http://localhost:1422",
     "frontendDist": "../dist"
   },
@@ -19,7 +19,22 @@
       "csp": null,
       "capabilities": [
         "main-capability",
-        "shell-scope"
+        "shell-scope",
+        {
+          "identifier": "fs-scope",
+          "description": "allowed file system scopes",
+          "permissions": [
+            {
+              "identifier": "fs:scope",
+              "allow": [
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome" },
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome/*" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper/*" }
+              ]
+            }
+          ]
+        }
       ]
     }
   },
@@ -58,6 +73,9 @@
           "/etc/xdg/autostart/pytubepp-helper-autostart.desktop": "./autostart/pytubepp-helper-autostart.desktop"
         }
       }
-    }
+    },
+    "externalBin": [
+      "binaries/7zip"
+    ]
   }
 }

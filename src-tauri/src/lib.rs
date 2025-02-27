@@ -50,7 +50,10 @@ async fn wait_for_port_availability(port: u16, max_attempts: u32) -> Result<(), 
         sleep(Duration::from_millis(500)).await;
         attempts += 1;
     }
-    Err(format!("Port {} did not become available after {} attempts", port, max_attempts))
+    Err(format!(
+        "Port {} did not become available after {} attempts",
+        port, max_attempts
+    ))
 }
 
 async fn start_websocket_server(app_handle: tauri::AppHandle, port: u16) -> Result<(), String> {
@@ -357,6 +360,8 @@ pub async fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_upload::init())
         .manage(websocket_state.clone())
         .setup(move |app| {
             // Create menu items

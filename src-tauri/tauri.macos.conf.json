@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && npm run dev",
-    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.${ARCH}.js && npm run build",
+    "beforeDevCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && node makeFilesExecutable.js && npm run dev",
+    "beforeBuildCommand": "[[ -n \"$TARGET_ARCH\" ]] && ARCH=\"$TARGET_ARCH\" || ARCH=\"$(uname -m | sed 's/^arm64$/aarch64/')-apple-darwin\" && cargo build --release --target=$ARCH --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.${ARCH}.js && node makeFilesExecutable.js && npm run build",
     "devUrl": "http://localhost:1422",
     "frontendDist": "../dist"
   },
@@ -38,7 +38,11 @@
                 { "path": "$RESOURCE/pytubepp-helper-msghost.json" },
                 { "path": "$RESOURCE/pytubepp-helper-msghost-moz.json" },
                 { "path": "$RESOURCE/pytubepp-helper-msghost" },
-                { "path": "$RESOURCE/pytubepp-helper-autostart.plist" }
+                { "path": "$RESOURCE/pytubepp-helper-autostart.plist" },
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome" },
+                { "path": "$DOWNLOAD/pytubepp-extension-chrome/*" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper" },
+                { "path": "$TEMP/com.neosubhamoy.pytubepp.helper/*" }
               ]
             }
           ]
@@ -67,6 +71,9 @@
       "pytubepp-helper-msghost-moz.json",
       "pytubepp-helper-msghost",
       "pytubepp-helper-autostart.plist"
+    ],
+    "externalBin": [
+      "binaries/7zip"
     ]
   }
 }

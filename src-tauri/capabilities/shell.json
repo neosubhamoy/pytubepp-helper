@@ -128,6 +128,21 @@
             },
             "--raw-info"
           ]
+        },
+        {
+          "name": "binaries/7zip",
+          "args": true,
+          "sidecar": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "name": "binaries/7zip",
+          "args": true,
+          "sidecar": true
         }
       ]
     }
