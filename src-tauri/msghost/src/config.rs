@@ -7,6 +7,7 @@ use std::path::PathBuf;
 pub struct Config {
     pub port: u16,
     pub theme: String,
+    pub notify_updates: bool,
 }
 
 impl Default for Config {
@@ -14,6 +15,7 @@ impl Default for Config {
         Self {
             port: 3030,
             theme: "system".to_string(),
+            notify_updates: true,
         }
     }
 }

@@ -18,7 +18,7 @@ export async function isInstalled(program: string, arg: string): Promise<{ insta
       return { installed: false, output: output.stdout };
     }
   } catch (error) {
-    console.error(error);
+    console.error(program + ':', error);
     return { installed: false, output: null };
   }
 }

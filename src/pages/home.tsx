@@ -234,8 +234,6 @@ export default function HomePage() {
         const checkForExtensionUpdates = async () => {
             try {
                 const downloadDirPath = await downloadDir()
-                // const extensionDirPath = await join(downloadDirPath, "pytubepp-extension-chrome")
-                // const extensionDirExists = await fs.exists(extensionDirPath)
                 const extensionManifestPath = await join(downloadDirPath, "pytubepp-extension-chrome", "manifest.json")
                 const extensionManifestExists = await fs.exists(extensionManifestPath)
                 if (extensionManifestExists) {

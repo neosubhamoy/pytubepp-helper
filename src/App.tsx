@@ -5,16 +5,20 @@ import { listen } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Config, WebSocketMessage } from "@/types";
-import { sendStreamInfo } from "@/lib/utils";
+import { compareVersions, sendStreamInfo } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { check as checkAppUpdate } from "@tauri-apps/plugin-updater";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
+import { downloadDir, join } from "@tauri-apps/api/path";
+import { fetch } from '@tauri-apps/plugin-http';
+import * as fs from "@tauri-apps/plugin-fs"
 
 function App({ children }: { children: React.ReactNode }) {
   const appWindow = getCurrentWebviewWindow()
   const [appConfig, setAppConfig] = useState<Config | null>(null);
   const [isAppUpdateChecked, setIsAppUpdateChecked] = useState(false);
+  const [isExtensionUpdateChecked, setIsExtensionUpdateChecked] = useState(false);
 
   // Prevent right click context menu in production
   if (!import.meta.env.DEV) {
@@ -91,10 +95,50 @@ function App({ children }: { children: React.ReactNode }) {
         }
     };
 
-    if (!isAppUpdateChecked) {
+    const checkForExtensionUpdates = async () => {
+      let permissionGranted = await isPermissionGranted();
+      if (!permissionGranted) {
+        const permission = await requestPermission();
+        permissionGranted = permission === 'granted';
+      }
+      try {
+          setIsExtensionUpdateChecked(true)
+          const downloadDirPath = await downloadDir()
+          const extensionManifestPath = await join(downloadDirPath, "pytubepp-extension-chrome", "manifest.json")
+          const extensionManifestExists = await fs.exists(extensionManifestPath)
+          if (extensionManifestExists) {
+              const currentManifest = JSON.parse(await fs.readTextFile(extensionManifestPath))
+              const response = await fetch('https://github.com/neosubhamoy/pytubepp-extension/releases/latest/download/latest.json', {
+                method: 'GET',
+              });
+              if (response.ok) {
+                const data = await response.json()
+                if (compareVersions(data.version, currentManifest.version) === 1) {
+                  console.log(`extension update available v${data.version}`);
+                  if (permissionGranted) {
+                    sendNotification({ title: `Extension Update Available (v${data.version})`, body: `A newer version of PytubePP Extension is available. Please update to the latest version to get the best experience!` });
+                  }
+                }
+              }
+              else {
+                console.error('Failed to fetch latest extension version');
+              }
+          } else {
+              console.log('Currently installed extension\'s manifest not found')
+          }
+      } catch (error) {
+          console.error(error);
+      }
+    };
+
+    if (!isAppUpdateChecked && appConfig?.notify_updates) {
       checkForUpdates();
     }
-  }, [])
+
+    if (!isExtensionUpdateChecked && appConfig?.notify_updates) {
+      checkForExtensionUpdates();
+    }
+  }, [appConfig])
 
   return (
     <ThemeProvider defaultTheme={appConfig?.theme || "system"} storageKey="vite-ui-theme">

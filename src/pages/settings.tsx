@@ -16,12 +16,15 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { getPlatformInfo } from "@/lib/platform-utils";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "@/components/theme-provider"
+import { Switch } from "@/components/ui/switch";
 
 const DEFAULT_PORT = 3030;
 const DEFAULT_THEME = "system";
+const DEFAULT_NOTIFY_UPDATES = true;
 const settingsFormSchema = z.object({
     port: z.number().min(3000, { message: "Port must be greater than 3000" }).max(3999, { message: "Port must be less than 3999" }),
-    theme: z.enum(["system", "dark", "light"]),
+    theme: z.enum(["system", "dark", "light"], { message: "Invalid theme" }),
+    notify_updates: z.boolean({ message: "Not a boolean value" }),
 })
 
 export default function SettingsPage() {
@@ -37,13 +40,14 @@ export default function SettingsPage() {
         defaultValues: {
             port: DEFAULT_PORT,
             theme: DEFAULT_THEME,
+            notify_updates: DEFAULT_NOTIFY_UPDATES,
         },
     });
 
     useEffect(() => {
         const subscription = settingsForm.watch((value) => {
             if (appConfig) {
-                setIsFormDirty(value.port !== appConfig.port || value.theme !== appConfig.theme);
+                setIsFormDirty(value.port !== appConfig.port || value.theme !== appConfig.theme || value.notify_updates !== appConfig.notify_updates);
             }
         });
         return () => subscription.unsubscribe();
@@ -54,7 +58,7 @@ export default function SettingsPage() {
             const config: Config = await invoke("get_config");
             if (config) {
                 setAppConfig(config);
-                settingsForm.reset({ port: config.port, theme: config.theme });
+                settingsForm.reset({ port: config.port, theme: config.theme, notify_updates: config.notify_updates });
             }
         }
         getConfig().catch(console.error);
@@ -81,7 +85,8 @@ export default function SettingsPage() {
             const updatedConfig: Config = await invoke("update_config", { 
                 newConfig: { 
                     port: Number(settingsForm.getValues().port),
-                    theme: settingsForm.getValues().theme
+                    theme: settingsForm.getValues().theme,
+                    notify_updates: settingsForm.getValues().notify_updates,
                 } 
             });
             setAppConfig(updatedConfig);
@@ -97,7 +102,7 @@ export default function SettingsPage() {
         try {
             const config: Config = await invoke("reset_config");
             setAppConfig(config);
-            settingsForm.reset({ port: config.port, theme: config.theme });
+            settingsForm.reset({ port: config.port, theme: config.theme, notify_updates: config.notify_updates });
             setIsFormDirty(false);
             toast("Settings reset to default");
         } catch (error) {
@@ -106,7 +111,7 @@ export default function SettingsPage() {
         }
     }
 
-    const isUsingDefaultConfig = appConfig?.port === DEFAULT_PORT && appConfig?.theme === DEFAULT_THEME;
+    const isUsingDefaultConfig = appConfig?.port === DEFAULT_PORT && appConfig?.theme === DEFAULT_THEME && appConfig?.notify_updates === DEFAULT_NOTIFY_UPDATES;
 
     return (
         <div className="container">
@@ -152,7 +157,7 @@ export default function SettingsPage() {
                 </div>
             </div>
             <div className={clsx("mt-5", !platformInfo?.isWindows && "mx-3")}>
-                <div className="flex flex-col min-h-[55vh] overflow-y-scroll">
+                <div className="flex flex-col min-h-[55vh] max-h-[58vh] overflow-y-scroll">
                     <Form {...settingsForm}>
                         <form onSubmit={settingsForm.handleSubmit(updateConfig)}>
                             <FormField
@@ -188,7 +193,7 @@ export default function SettingsPage() {
                                 control={settingsForm.control}
                                 name="theme"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="mb-2">
                                         <FormLabel>Theme</FormLabel>
                                         <FormControl>
                                             <Select {...field} onValueChange={(value) => field.onChange(value)}>
@@ -204,7 +209,30 @@ export default function SettingsPage() {
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
+                                        <FormDescription>
+                                            Choose app interface theme
+                                        </FormDescription>
                                         <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={settingsForm.control}
+                                name="notify_updates"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm mb-4 mt-3">
+                                        <div className="space-y-0.5">
+                                            <FormLabel>Notify Updates</FormLabel>
+                                            <FormDescription>
+                                            Notify for app and component updates (Recommended)
+                                            </FormDescription>
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
                                     </FormItem>
                                 )}
                             />
@@ -213,7 +241,7 @@ export default function SettingsPage() {
                     </Form>
                 </div>
                 <div className="flex justify-between items-center border-t border-muted-foreground/50 pt-2 relative">
-                    <div className="tintbar absolute -top-[0.10rem] left-0 -translate-y-full w-full h-5 bg-gradient-to-b from-transparent to-background"></div>
+                    <div className="tintbar absolute -top-[0.05rem] left-0 -translate-y-full w-full h-5 bg-gradient-to-b from-transparent to-background"></div>
                     <div className="flex flex-col">
                         <p>PytubePP Helper <span className="text-muted-foreground">|</span> <span className="text-sm text-muted-foreground">v{appVersion}-beta</span></p>
                         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} - <a href="https://github.com/neosubhamoy/pytubepp-helper/blob/main/LICENSE" target="_blank">MIT License</a> - Made with ❤️ by <a href="https://neosubhamoy.com" target="_blank">Subhamoy</a></p>

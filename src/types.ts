@@ -1,6 +1,7 @@
 export interface Config {
     port: number;
     theme: "system" | "dark" | "light";
+    notify_updates: boolean;
 }
 
 export interface PlatformInfo {
