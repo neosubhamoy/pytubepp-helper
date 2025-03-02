@@ -1,7 +1,7 @@
 {
   "build": {
     "beforeDevCommand": "cargo build --manifest-path=./src-tauri/msghost/Cargo.toml && npm run dev",
-    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && node copyFiles.js && npm run build",
+    "beforeBuildCommand": "cargo build --release --manifest-path=./src-tauri/msghost/Cargo.toml && npm run build",
     "devUrl": "http://localhost:1422",
     "frontendDist": "../dist"
   },
@@ -62,11 +62,11 @@
         "installerHooks": "installer/windows/nsis-hooks.nsi"
       }
     },
-    "resources": [
-      "pytubepp-helper-msghost.json",
-      "pytubepp-helper-msghost-moz.json",
-      "pytubepp-helper-msghost.exe"
-    ],
+    "resources": {
+      "msghost-manifest/windows/chrome/com.neosubhamoy.pytubepp.helper.json": "pytubepp-helper-msghost.json",
+      "msghost-manifest/windows/firefox/com.neosubhamoy.pytubepp.helper.json": "pytubepp-helper-msghost-moz.json",
+      "target/release/pytubepp-helper-msghost.exe": "pytubepp-helper-msghost.exe"
+    },
     "externalBin": [
       "binaries/7zip"
     ]
