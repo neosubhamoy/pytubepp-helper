@@ -101,7 +101,7 @@ export default function ExtensionManagerPage() {
             );
 
             setUpdateStatus('Unpacking')
-            const output = await Command.sidecar('binaries/7zip', ['x', tempExtensionDownloadPath, `-o${extensionDirPath}`, '-aoa']).execute()
+            const output = await Command.sidecar('binaries/sevenzip', ['x', tempExtensionDownloadPath, `-o${extensionDirPath}`, '-aoa']).execute()
             if (output.code === 0) {
                 console.log(output.stdout)
                 console.log(`Unpacked ${tempExtensionDownloadPath} to ${extensionDirPath}`)

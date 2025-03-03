@@ -73,7 +73,7 @@
       "pytubepp-helper-autostart.plist"
     ],
     "externalBin": [
-      "binaries/7zip"
+      "binaries/sevenzip"
     ]
   }
 }

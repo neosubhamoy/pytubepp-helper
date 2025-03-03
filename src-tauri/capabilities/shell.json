@@ -130,7 +130,7 @@
           ]
         },
         {
-          "name": "binaries/7zip",
+          "name": "binaries/sevenzip",
           "args": true,
           "sidecar": true
         }
@@ -140,7 +140,7 @@
       "identifier": "shell:allow-spawn",
       "allow": [
         {
-          "name": "binaries/7zip",
+          "name": "binaries/sevenzip",
           "args": true,
           "sidecar": true
         }
