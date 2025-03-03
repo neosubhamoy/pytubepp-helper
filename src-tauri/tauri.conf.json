@@ -20,7 +20,7 @@
   },
   "productName": "pytubepp-helper",
   "mainBinaryName": "pytubepp-helper",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "identifier": "com.neosubhamoy.pytubepp.helper",
   "plugins": {
     "updater": {

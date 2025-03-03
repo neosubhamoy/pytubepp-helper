@@ -12,7 +12,7 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
 ### 💻 Supported Platforms
 - Windows 10 (v1803 or later) / 11
-- Linux (Debian/Ubuntu, Fedora/RHEL base)
+- Linux (Debian / Fedora / Arch Linux base)
 - MacOS (v10.13 or later)
 
 ### 📎 Pre-Requirements
@@ -25,12 +25,17 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
 ### ⬇️ Download and Installation
 
-1. Download the latest [PytubePP Helper](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) release based on your OS and CPU Architecture
+1. Download the latest [PytubePP Helper](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) release based on your OS and CPU Architecture then install it or install it directly from an available distribution channel
 
 | Arch\OS | Windows | Linux | MacOS |
 | :----        | :----   | :---- | :---- |
 | x86_64 | ✅ [Download](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) | ✅ [Download](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) | ✅ [Download](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) |
 | ARM64 | ❌ N/A | ❌ N/A | ✅ [Download](https://github.com/neosubhamoy/pytubepp-helper/releases/latest) |
+
+| Platform | Distribution Channel | Installation Command / Instruction |
+| :---- | :---- | :---- |
+| Windows x86_64 | WinGet | `winget install pytubepp-helper` |
+| Linux x86_64 (Arch) | AUR | `yay -S pytubepp-helper` |
 
 2. Install all [pre-requirements](https://github.com/neosubhamoy/pytubepp-helper#-pre-requirements) and [PytubePP Extension](https://github.com/neosubhamoy/pytubepp-extension) (follow next instructions based on your OS)
 
@@ -52,7 +57,7 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
 * **🐧 LINUX:**
 
-   > ⚠️ NOTE: Most of the Debian / RHEL based distros are supported. Tested on: debian (v12), ubuntu (v24.04 LTS), fedora (v41). If your distro is not in the tested list it doesn't mean that 'the app will not run at all', so, test it yourself and if it doesn't work then you can request us to add support for your distro via creating a github issue.
+   > ⚠️ NOTE: Most of the Debian / Fedora / Arch based distros are supported. Tested on: debian (v12), ubuntu (v24.04 LTS), fedora (v41), arch linux (latest rolling). If your distro is not in the tested list it doesn't mean that 'the app will not run at all', so, test it yourself and if it doesn't work then you can request us to add support for your distro via creating a github issue.
 
    > ⚠️ Sandboxed Browsers may not work properly (eg: Flatpak, Snaps) (have issue with: Browser NativeMessaging API [read here](https://github.com/flatpak/xdg-desktop-portal/issues/655)) (But, still try it yourself to see if it works)
 
@@ -77,7 +82,7 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
    3. Now, open PytubePP Helper app and click on the (blue) install button on the right side of 'FFmpeg' to install it. Also, install 'Node.js' and 'PytubePP' following the same step.
 
-   4. Then, click on the 'Register' botton on the top right corner to register 'PytubePP Helper' in your system and also add it to your system's autostart entry. If you see a MacOS notification saying 'pytubepp-helper' is added as a startup app then it's done.
+   4. Then, click on the 'register to mac' icon on the top right corner to register 'PytubePP Helper' in your system and also add it to your system's autostart entry. If you see a MacOS notification saying 'pytubepp-helper' is added as a startup app then it's perfectly done.
 
    5. Now click on the 'Refresh' button and you will see the 'Ready' message. Then close PytubePP Helper.
 
@@ -91,17 +96,17 @@ A Helper App for PytubePP Extension/Addon to Communicate with Pytube Post Proces
 
 ### 🤔 How It Works
 
-- PytubePP Helper is an intermediate communicator between PytubePP Extension and Pytube Post Processor CLI interface. It is used as a bridge to estblish communication between the System Shell / CMD and Browser Extension, as a Browser Extension can not directly talk (execute commands) with System Shell / CMD for security reasons. Browser Extensions are isolated from the system too, the only way they can communicate with the system (native apps only) is nativeMessaging API provided by Chrome (other Browsers provides it too). So, PytubePP Helper uses that API to communicate with the Browser Extension and recives it's requests and processes the data from PytubePP CLI then genrates a response and sends it to the Browser Extension. For further understanding view the system design diagram of PytubePP Helper app below:
+- PytubePP Helper is an intermediate communicator between PytubePP Extension and Pytube Post Processor CLI interface. It is used as a bridge to estblish communication between the System Shell / CMD and Browser Extension(as Browser Extensions can't directly talk, execute commands with System Shell / CMD for security reasons they are isolated from the system) The only way a browser extension can communicate with the system (native app) is Browser nativeMessaging API (Available on Chrome, Firefox etc.). So, PytubePP Helper uses that API to communicate with the PytubePP Browser Extension (PytubePP Helper recives PytubePP Extension's requests then processes the request using PytubePP CLI and returns back the response to the Extension) For further understanding view the system design diagram of PytubePP Helper app below:
 
 ![PytubePPHelperDiagram](./assets/images/pytubepp-helper-diagram.png)
 
 ### ⚡ Technologies Used
 
 ![Tauri](https://img.shields.io/badge/tauri-%2324C8DB.svg?style=for-the-badge&logo=tauri&logoColor=%23FFFFFF)
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![ShadCnUi](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)
-![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
 
 ### 🛠️ Contributing / Building from Source
 
@@ -117,6 +122,7 @@ Want to be part of this? Feel free to contribute...!! Pull Requests are always w
 npm install
 ```
 4. Run development / build process
+> Make sure to run the build command once before running the dev command to avoid errors
 ```code
 npm run tauri dev
 ```
